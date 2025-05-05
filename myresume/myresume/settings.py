@@ -7,6 +7,9 @@ SECRET_KEY = 'django-insecure-4(@l6^@5fr1jx(5#k@-+j!%c!p7l-*(s%a5co@$xlyy)k*olbp
 
 DEBUG = True
 
+print(os.path.join(BASE_DIR, 'static/assets/'))  # This should point to your static directory
+
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -17,6 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'tinymce',
+    'emoji'
 ]
 
 MIDDLEWARE = [
@@ -34,7 +39,7 @@ ROOT_URLCONF = 'myresume.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Ensure 'templates' folder is correctly set
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -46,6 +51,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'myresume.wsgi.application'
 
@@ -71,6 +77,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/admin/User/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -79,13 +91,16 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/assets/')
 ]
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles/media')
+
+# Media files (uploads)
+MEDIA_URL = '/media/'  # The URL for accessing media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The directory to store uploaded media files
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -98,3 +113,11 @@ EMAIL_HOST_USER = 'ratul.cool24@gmail.com'  # Fetch email username from environm
 EMAIL_HOST_PASSWORD = 'xkjm kaoa dwqd yigp'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'theme_advanced_buttons1': 'bold,italic,underline,separator,strikethrough,sub,sup,separator,undo,redo,separator,justifyleft,justifycenter,justifyright,separator,link,unlink,anchor,image',
+    'theme_advanced_buttons2': 'bullist,numlist,outdent,indent,blockquote,separator,code,separator,forecolor,backcolor',
+    'theme_advanced_buttons3': '',
+    'plugins': 'advlink,autolink,image,insertdatetime,media,contextmenu',
+    'height': 300,
+}

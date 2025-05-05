@@ -1,0 +1,70 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Custom Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+<!--  font family style-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Orbitron:wght@400..900&family=Zen+Dots&display=swap" rel="stylesheet">
+  <style>
+    .orbitron-custom {
+  font-family: "Zen Dots", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+  </style>
+</head>
+<body class="bg-blue-900 text-white min-h-screen p-0 sm:p-10 flex flex-col">
+
+  <!-- Alpine.js for mobile toggle -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<nav class="bg-blue-600 shadow-md px-6 py-4 mb-6 sticky top-0" x-data="{ open: false }">
+    <div class="flex flex-wrap items-center justify-between max-w-7xl mx-auto">
+
+      <!-- Branding -->
+      <div class="flex items-center space-x-3">
+        <a href="{% url 'dashboard_home' %}" class="inline-block py-1 sm:py-0 text-white hover:text-blue-200 hover:underline font-semibold transition-all duration-300 text-2xl orbitron-custom">
+          Admin Dashboard
+        </a>
+      </div>
+
+      <!-- Toggle button (mobile) -->
+      <button @click="open = !open" class="sm:hidden text-white focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+
+      <!-- Right section -->
+      <div :class="open ? 'block' : 'hidden'" class="sm:flex sm:items-center sm:space-x-6 mt-3 sm:mt-0 w-full sm:w-auto">
+
+
+        <a href="{% url 'model_list' 'User' %}" class="block py-1 sm:py-0 text-white hover:text-blue-200">Users</a>
+
+        <!-- Profile Info -->
+        <div class="flex items-center space-x-2 mt-2 sm:mt-0 bg-white text-gray-800 px-4 py-2 rounded-lg shadow-md">
+          <a href="{% url 'model_edit' 'user' request.user.id %}"
+             class="text-sm font-semibold hover:underline"
+             style="color: {{ user_color }};">
+            {{ request.user.username }}
+          </a>
+        </div>
+
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="text-red-500 hover:underline text-lg ml-2">Logout</button>
+</form>
+
+      </div>
+
+    </div>
+  </nav>
+
+</body>
+</html>

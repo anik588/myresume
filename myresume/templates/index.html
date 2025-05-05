@@ -11,6 +11,13 @@
   <!-- Load static files -->
   {% load static %}
 
+<!--    social links -->
+      <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-...your-integrity-key..." crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+<!-- Include Bootstrap Icons (For Arrows) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
   <!-- Favicons -->
   <link href="{% static 'img/portfolio-fav.png' %}" rel="icon">
 
@@ -23,72 +30,64 @@
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons (make sure it's included in your <head>) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Vendor CSS Files -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+
   <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style2.css' %}" rel="stylesheet">
+<!-- AOS Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-      <style>
+
+<!-- Add the CSS -->
+<style>
+
+
+          /* portfolio Section END */
+
+
+.container {
+    padding-top:20px !important;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  position: relative;
+}
+
+.aos-animate {
+  opacity: 1 !important; /* Element in view */
+}
+
+[data-aos][data-aos].aos-init {
+  opacity: 0; /* Element not in view */
+}
+
+/* Custom fade-down effect */
+.fade-down {
+  opacity: 0;
+  transform: translateY(-30px); /* Move up slightly when fading down */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
     /* Include the CSS directly for easier debugging */
 
   @media (max-width: 768px) {
   .hero img {
     height: auto;
   }
-}
-/* Portfolio Section */
-.portfolio-items-container {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-
-.portfolio-items {
-  display: none;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-.portfolio-items.active {
-  display: block;
-  opacity: 1;
-}
-
-.portfolio-item {
-  max-height:700px;
-  flex: 1;
-  float: left;
-  margin: 10px;
-  border-radius: 10px;
-  width: calc(33.33% - 20px);
-}
-
-/* Responsive adjustments */
-@media (max-width: 992px) {
-  .portfolio-item {
-    width: calc(50% - 20px); /* Adjust width for two items per row */
-  }
-}
-
-@media (max-width: 768px) {
-  .portfolio-item {
-    width: 100%; /* Full width for one item per row on smaller screens */
-    margin: 10px 0;
-  }
-}
-
-@media (max-width: 576px) {
-  .portfolio-item {
-    width: 100%; /* Full width for one item per row on smallest screens */
-    margin: 10px 0;
-  }
-
-
 }
 
 @media (max-width: 576px) {
@@ -351,14 +350,21 @@
 
 <body class="index-page">
 
+<div class="cursor-container">
+    <div class="cursor-inner"></div>
+    <div class="cursor-outer"></div>
+</div>
+
+
   <header id="header" class="header d-flex flex-column justify-content-center">
     <i class="header-toggle d-xl-none bi bi-list"></i>
     <nav id="navmenu" class="navmenu">
       <ul>
         <li><a href="/#hero" class="active"><i class="bi bi-house navicon"></i><span>Home</span></a></li>
-        <li><a href="/#about"><i class="bi bi-person navicon"></i><span>About</span></a></li>
-        <li><a href="/#resume"><i class="bi bi-file-earmark-text navicon"></i><span>Resume</span></a></li>
-        <li><a href="/#github" ><i class="fa-brands fa-github"></i><span>Github</span></a></li>
+        <li><a href="/#resume"><i class="bi bi-person"></i><span>Resume</span></a></li>
+          <li><a href="/#github" ><i class="fa-brands fa-github"></i><span>Github</span></a></li>
+        <li><a href="/#skill"><i class="bi bi-code-slash navicon"></i><span>Skill</span></a></li>
+
         <li><a href="/#portfolio"><i class="bi bi-images navicon"></i><span>Portfolio</span></a></li>
         <li><a href="/#testimonials"><i class="fa-regular fa-comment-dots"></i><span>Testimonial</span></a></li>
         <li><a href="/#contact"><i class="bi bi-envelope navicon"></i><span>Contact</span></a></li>
@@ -369,12 +375,12 @@
   <main class="main">
     <!-- Hero Section -->
     <section id="hero" class="hero section light-background">
-      <img src="{% static 'img/portfolio-cover.jpg' %}" alt="">
+      <img src="{% static 'img/portfolio-cover-2.jpg' %}" alt="">
       <div class="container" data-aos="zoom-out">
         <div class="row justify-content-center">
           <div class="col-lg-9">
             <h2>Sajjad Ahmed Anik</h2>
-           <p>I'm a <span class="typed" data-typed-items="Web Developer,Expert in React-Django,PhotoShop Designer">Full Stack Developer</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
+           <p>I'm a <span class="typed" data-typed-items="Full Stack Web developer, Researcher,PhotoShop Designer"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
             <div class="social-links">
               <a href="https://x.com/sajjad_anik588"><i class="bi bi-twitter"></i></a>
               <a href="https://facebook.com/sa.anik24"><i class="bi bi-facebook"></i></a>
@@ -387,290 +393,228 @@
     </section>
     <!-- /Hero Section END-->
 
-    <!-- About Section -->
-    <section id="about" class="about section">
+<!-- Divider with label -->
+<div class="professional-profiles" style="position: relative; text-align: center; margin: 20px 0;">
+  <hr style="border: none; border-top: 2px solid #ccc;">
+<span class="professional-profiles-span">
+  Watch out My Professional Profiles
+</span>
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>About</h2>
-        <p>I am a web developer with expertise in Django, React, and Bootstrap. I specialize in creating dynamic web applications, API testing, and implementing secure authentication.</p>
-      </div><!-- End Section Title -->
+</div>
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+<!-- Social Bar -->
+<div class="wide-social-bar">
+  <a href="https://www.upwork.com" class="icon-upwork" target="_blank" title="Upwork">
+    <div class="circle-icon"><i class="fab fa-upwork"></i></div>
+    <div class="icon-title">Upwork</div>
+  </a>
 
-        <div class="row gy-4 justify-content-center">
-          <div class="col-lg-4">
-            <img src="{% static 'img/resume-pic-blue.png' %}" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-8 content">
-            <h2>Full Stack Web Developer</h2>
-            <p class="fst-italic py-3">
-            Skilled in building robust and scalable web applications using Django, React, and Bootstrap, with a focus on seamless user experiences and secure authentication.
-            </p>
-            <div class="row">
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>24 November 2000</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span>www.example.com</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+880 13037 60958</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>Dhaka, Bangladesh</span></li>
-                </ul>
-              </div>
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>24</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>B.Sc. in Physics</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>anik@teccmark.com</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available</span></li>
-                </ul>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-      <!-- Skills Section -->
-<section id="skills" class="skills section">
-
-  <!-- Section Title -->
-  <div class="container section-title" data-aos="fade-up">
-    <h2>Skills</h2>
-    <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-  </div><!-- End Section Title -->
-
-  <div class="container" data-aos="fade-up" data-aos-delay="100">
-    <div class="row skills-content skills-animation">
-
-      <div class="col-lg-6">
-
-        <div class="progress">
-          <span class="skill"><span>HTML</span> <i class="val">100%</i></span>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        </div><!-- End Skills Item -->
-
-        <div class="progress">
-          <span class="skill"><span>CSS</span> <i class="val">95%</i></span>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        </div><!-- End Skills Item -->
-
-        <div class="progress">
-          <span class="skill"><span>JavaScript</span> <i class="val">90%</i></span>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        </div><!-- End Skills Item -->
-
-      </div>
-
-      <div class="col-lg-6">
-
-        <div class="progress">
-          <span class="skill"><span>React</span> <i class="val">85%</i></span>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        </div><!-- End Skills Item -->
-
-        <div class="progress">
-          <span class="skill"><span>WordPress/CMS</span> <i class="val">100%</i></span>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        </div><!-- End Skills Item -->
-
-        <div class="progress">
-          <span class="skill"><span>Photoshop</span> <i class="val">95%</i></span>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        </div><!-- End Skills Item -->
-
-      </div>
-
+  <a href="https://www.fiverr.com" class="icon-fiverr" target="_blank" title="Fiverr">
+    <div class="circle-icon" >
+      <!-- Replace with your SVG path for Fiverr -->
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" viewBox="0 0 50 50">
+        <path d="M41.86 21.321v-1.539h-2.919l-1.283-.022c-1.097 0-1.847.722-2.141 1.561v-1.539h-3.269v9.979h3.269v-2.14-3.312c0-.995.806-1.801 1.801-1.801h1.274v7.253h3.269v-2.14-3.312c0-.995.806-1.801 1.801-1.801h1.623v-2.726l-1.283-.022C42.905 19.759 42.156 20.482 41.86 21.321zM18.597 19.991L16.843 25.758 15.089 19.991 11.82 19.991 15.371 29.97 15.562 29.97 18.124 29.97 18.315 29.97 21.866 19.991zM5.239 19.991v-.665c0-.583.472-1.055 1.055-1.055h2.064v-2.737H5.523c-1.962 0-3.553 1.591-3.553 3.553v.905H.059v2.645h1.911v7.334H5.24v-7.334h3.118v7.334h3.269v-7.334-2.645H8.358 5.239zM26.398 19.857H26c-2.678 0-4.849 2.171-4.849 4.849v.548c0 2.678 2.171 4.849 4.849 4.849h.885c1.834 0 3.403-1.132 4.048-2.735l-2.884-.842c0 0-.345.988-1.548.988-1.358 0-2.077-.744-2.172-1.586h-.001v-.005c-.007-.061-.01-.123-.01-.185h3.688 3.242v-1.032C31.248 22.028 29.077 19.857 26.398 19.857zM24.322 23.814c.039-.897.777-1.613 1.684-1.613h.312c.907 0 1.645.716 1.684 1.613H24.322zM47.932 26.136c-1.123 0-2.033.91-2.033 2.033s.91 2.033 2.033 2.033c1.123 0 2.033-.91 2.033-2.033C49.964 27.046 49.055 26.136 47.932 26.136z"></path>
+        </svg>
     </div>
-  </div>
+    <div class="icon-title">Fiverr</div>
+  </a>
 
-</section><!-- /Skills Section -->
+  <a href="https://www.linkedin.com" class="icon-linkedin" target="_blank" title="LinkedIn">
+    <div class="circle-icon"><i class="fab fa-linkedin-in"></i></div>
+    <div class="icon-title">LinkedIn</div>
+  </a>
+
+  <a href="https://github.com" class="icon-github" target="_blank" title="GitHub">
+    <div class="circle-icon"><i class="fab fa-github"></i></div>
+    <div class="icon-title">GitHub</div>
+  </a>
+</div>
 
 
-<!-- Resume Section -->
-    <section id="resume" class="resume section">
+<!-- About Section Start -->
+<section id="resume" data-aos="fade-up" data-aos-duration="1000">
+          <div class="container section-title" >
+        <h2>About Me & Resume</h2>
+          </div><!-- End Section Title -->
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Resume</h2>
-      </div><!-- End Section Title -->
-      <div class="container">
+           {% include 'about.html' %}
+</section>
+      <!-- About and Resume Section END -->
 
-        <div class="row">
 
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="resume-title">Summary</h3>
+      <!-- About Section END -->
 
-            <div class="resume-item pb-0">
-              <h4>Sajjad Ahmed Anik</h4>
-              <p><em>Innovative and deadline-driven Full Stack Web Developer with expertise in Django, React, and Bootstrap. Skilled in designing and developing user-centered web applications from initial concept to final, polished deliverable.</em></p>
-              <ul>
-                <li>201 North Shahjahanpur, Dhaka-1219, Bangladesh</li>
-                <li>+880 13037 60958</li>
-                <li>anik@teccmark.com</li>
-              </ul>
-            </div><!-- End Resume Item -->
+      <!--      GitHub Section Start   -->
 
-            <h3 class="resume-title">Education</h3>
-
-            <div class="resume-item">
-              <h4>Bachelor of Science</h4>
-              <h5>2020-2024</h5>
-              <p><em>University of Dhaka</em></p>
-              <p>Bachelor of Science in Physics (2020-2024) from the University of Dhaka. My academic journey intertwined with my passion for web development and data science using python,c++  enabling me to integrate analytical and technical skills into creating innovative digital solutions.</p>
-            </div><!-- End Resume Item -->
-
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-            <h3 class="resume-title">Professional Experience</h3>
-            <div class="resume-item">
-              <h4>Backend Developer at Teccmark</h4>
-              <h5>2023 - Present</h5>
-              <p><em>Dhaka, Bangladesh</em></p>
-              <ul>
-                <li>Led the design, development, and implementation of web applications, including backend services, APIs, and databases.</li>
-                <li>Delegated tasks to a team of 7 developers and provided guidance on all aspects of the project, ensuring secure authentication and authorization mechanisms.</li>
-                <li>Supervised the assessment of all code and design materials to ensure quality, accuracy, and robust performance.</li>
-                <li>Oversaw the efficient use of project budgets ranging from $2,000 to $25,000.</li>
-              </ul>
-            </div><!-- End Resume Item -->
-
-            <div class="resume-item">
-            <h4>Graphic Designer</h4>
-            <p><em>Konica Trading, Dhaka-1219</em></p>
-            <ul>
-              <li>Worked on various marketing programs including logos, brochures, infographics, presentations, and advertisements using Adobe Photoshop and Canva Pro.</li>
-              <li>Handled multiple projects or tasks simultaneously, even under pressure.</li>
-              <li>Experienced in making website logos and simple video editing.</li>
-            </ul>
-
-          </div>
-
-        </div>
-
-      </div>
-      </div>
-        </div>
-      </section><!-- /Resume Section -->
-
-<!--      GitHub Section Start   -->
-
-<div class="github-section" id="github">
-  <!-- Portfolio Header with GitHub Logo -->
+<!--<div class="github-section" id="github">
+  &lt;!&ndash; Portfolio Header with GitHub Logo &ndash;&gt;
   <div class="portfolio-header">
     <h2>My GitHub Portfolio <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="github-logo" alt="GitHub Logo"></h2>
   </div>
 
-  <!-- GitHub Profile -->
+  &lt;!&ndash; GitHub Profile &ndash;&gt;
   <div class="github-profile" >
     <img id="github-profile-img" class="github-profile-img" src="" alt="Profile Image">
     <h3 id="github-username" class="mb-0 mt-3" style="color: white;"></h3>
-    <p id="github-bio" class="mt-2" style="font-size: 0.9rem;"></p> <!-- GitHub bio under the name -->
+    <p id="github-bio" class="mt-2" style="font-size: 0.9rem;"></p> &lt;!&ndash; GitHub bio under the name &ndash;&gt;
   </div>
 
-  <!-- Section Title -->
+  &lt;!&ndash; Section Title &ndash;&gt;
   <h4 class="text-center"style="color: green;">My GitHub Repositories</h4>
 
-  <!-- Recent Repositories -->
+  &lt;!&ndash; Recent Repositories &ndash;&gt;
   <div id="github-repos" class="repo-list"></div>
-</div>
+</div>-->
 <!--            Github Section END    -->
 
-<!-- Portfolio Section START -->
-  <!-- Portfolio Section START -->
-<section id="portfolio" class="portfolio section">
-  <!-- Section Title -->
-  <div class="container section-title" data-aos="fade-up">
-    <h2>Portfolio</h2>
-    <p>Explore some of our featured projects.</p>
-  </div><!-- End Section Title -->
+      <!-- Skill Section Start -->
 
-  <div class="container">
-    <div class="portfolio-slider">
-      <!-- Slider Navigation -->
-      <div class="slider-nav text-center">
-        <button class="nav-button" data-target="shipping">E-commerce</button>
-        <button class="nav-button" data-target="newspaper-site">newspaper-site</button>
-        <button class="nav-button" data-target="photoshop">PhotoShop</button>
-      </div><!-- End Slider Navigation -->
+<section id="skill" data-aos="fade-up" data-aos-duration="1000">
+      <div class="container section-title" >
+        <h2>My Skills</h2>
+<div style="color: #111; text-align: center; font-size: 1.5rem; font-family: sans-serif; margin: 12px 10px;">
+  <p>I work with React, Django, Three.js & more</p>
+  <h3>To Be Play, Drag to rotate • Pinch/scroll to zoom</h3>
+</div>
 
-      <!-- Portfolio Items Container -->
-<!--Portfolio Item-1   -->
-      <div class="portfolio-items-container">
-        <div class="portfolio-items" id="shipping">
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/a-plus/a-plus-shop-site.jpeg' %}" class="img-fluid" alt="Shipping 1">
-          </div>
-          <div class="portfolio-item" style="border: 1px solid black;">
-            <img src="{% static 'img/portfolio-pics/a-plus/a-shop-site-mobile-view.jpg' %}" class="img-fluid" alt="Shipping 2">
-          </div>
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/a-plus/a-shop-site-mobile_responsive.jpeg' %}" class="img-fluid" alt="Shipping 3">
-          </div>
-          <!-- About This Project Button -->
-          <div class="text-center">
-            <a href="portfolio-ecommerce/" class="btn btn-primary about-btn">About this Project</a>
-          </div>
-        </div>
-<!--Portfolio Item-2-->
-        <div class="portfolio-items" id="newspaper-site">
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/newspaper-site/newspaper-site-1.jpg' %}" class="img-fluid" alt="newspaper-site 1">
-          </div>
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/newspaper-site/newspaper-site-2.jpg' %}" class="img-fluid" alt="newspaper-site 2">
-          </div>
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/newspaper-site/newspaper-site-3.jpg' %}" class="img-fluid" alt="newspaper-site-3">
-          </div>
-          <!-- About This Project Button -->
-          <div class="text-center">
-            <a href="portfolio-newspaper-site/" class="btn btn-primary about-btn">About this Project</a>
-          </div>
-        </div>
-<!--Portfolio Item-3-->
-        <div class="portfolio-items" id="photoshop">
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/photoshop/anik-ps1.jpg' %}" class="img-fluid" alt="Photoshop 1">
-          </div>
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/ns/ns-rounded.png' %}" class="img-fluid" alt="Photoshop 2">
-          </div>
-          <div class="portfolio-item">
-            <img src="{% static 'img/portfolio-pics/photoshop/bithi-logo-1.jpg' %}" class="img-fluid" alt="Photoshop 3">
-          </div>
-          <!-- About This Project Button -->
-<!--          <div class="text-center">
-            <a href="portfolio-photoshop/" class="btn btn-primary about-btn">About this Project</a>
-          </div>-->
-        </div>
-      </div><!-- End Portfolio Items Container -->
 
-    </div><!-- End Portfolio Slider -->
-  </div><!-- End Container -->
-</section><!-- End Portfolio Section -->
+      </div><!-- End Section Title -->
+
+
+
+     {% include 'skills.html' %}
+</section>
+<!-- Skills Section -->
+
+
+
+
+      <!-- 🚀 Drop-In Voyage Style Slider | Paste into index.html -->
+
+
+<section id="portfolio" class="py-8 mx-auto" style="width: 80%;">
+  <div class="container section-title mx-auto text-center mb-6">
+    <h2 class="text-3xl font-semibold">Portfolio</h2>
+    <p class="text-muted">Explore some featured projects.</p>
+  </div>
+
+  <!-- Category Buttons -->
+  <div class="flex flex-wrap justify-center gap-3 mb-6">
+    {% for group in categorized_projects %}
+      <button
+        class="category-btn px-3 py-1 text-sm sm:px-4 sm:py-2 sm:text-base bg-gray-800 text-white rounded transition"
+        data-category="{{ group.name }}">
+        {{ group.name }}
+      </button>
+    {% endfor %}
+  </div>
+
+  <!-- Slider Section -->
+  <div class="relative w-full max-w-5xl mx-auto overflow-hidden">
+    <!-- Left Arrow -->
+    <button class="arrow left absolute top-1/2 -translate-y-1/2 left-0 z-10 p-3 bg-blue-600 text-white rounded-full shadow-md hover:scale-110 transition">
+      <i class="bi bi-chevron-left text-xl"></i>
+    </button>
+
+    <!-- Slider Track -->
+    <div class="slider-track flex gap-x-4 px-4 transition-transform duration-500 ease-in-out scroll-smooth snap-x overflow-x-auto no-scrollbar">
+
+      <!-- Spacer Left -->
+      <div class="shrink-0 w-[20%] sm:w-[15%] md:w-[10%] lg:w-[8%]"></div>
+
+{% for group in categorized_projects %}
+  {% for project in group.projects %}
+    <div class="slide shrink-0 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] snap-center relative transition-all duration-500 ease-in-out px-0.5" data-category="{{ group.name }}">
+      <div class="project-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300">
+        <a href="{% url 'project_detail' project.pk %}">
+          <img src="{{ project.image_1.url }}" alt="{{ project.name }}" class="w-full h-60 object-cover">
+        </a>
+        <div class="p-4 text-center">
+          <a href="{% url 'project_detail' project.pk %}">
+            <h3 class="font-semibold text-gray-800 text-lg">{{ project.name }}</h3>
+          </a>
+          <p class="text-sm text-gray-600">{{ group.name }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endfor %}
+
+
+      <!-- Spacer Right -->
+      <div class="shrink-0 w-[20%] sm:w-[15%] md:w-[10%] lg:w-[8%]"></div>
+    </div>
+
+    <!-- Right Arrow -->
+    <button class="arrow right absolute top-1/2 -translate-y-1/2 right-0 z-10 p-3 bg-blue-600 text-white rounded-full shadow-md hover:scale-110 transition">
+      <i class="bi bi-chevron-right text-xl"></i>
+    </button>
+  </div>
+</section>
+
+<!-- Script -->
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const track = document.querySelector('.slider-track');
+  const leftArrow = document.querySelector('.arrow.left');
+  const rightArrow = document.querySelector('.arrow.right');
+  const categoryBtns = document.querySelectorAll('.category-btn');
+
+  let currentIndex = 0;
+
+  function updateSlider() {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'prev', 'next');
+      if (i === currentIndex) {
+        slide.classList.add('active');
+        const category = slide.dataset.category;
+        categoryBtns.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.category === category);
+        });
+      } else if (i === currentIndex - 1) {
+        slide.classList.add('prev');
+      } else if (i === currentIndex + 1) {
+        slide.classList.add('next');
+      }
+    });
+
+    const slideWidth = slides[currentIndex].offsetWidth;
+    const offset = slides[currentIndex].offsetLeft - (track.offsetWidth - slideWidth) / 2;
+    track.scrollTo({ left: offset, behavior: 'smooth' });
+  }
+
+  function scrollToIndex(index) {
+    if (index >= 0 && index < slides.length) {
+      currentIndex = index;
+      updateSlider();
+    }
+  }
+
+  leftArrow.addEventListener('click', () => scrollToIndex(currentIndex - 1));
+  rightArrow.addEventListener('click', () => scrollToIndex(currentIndex + 1));
+
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.dataset.category;
+      const matchIndex = [...slides].findIndex(slide => slide.dataset.category === category);
+      if (matchIndex !== -1) {
+        scrollToIndex(matchIndex);
+      }
+    });
+  });
+
+  // Auto init
+  updateSlider();
+  window.addEventListener('resize', () => updateSlider());
+</script>
+
 
 <hr color="blue" width="95%" size="2px">
 
 <section id="testimonials" class="testimonials section">
 
     <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
+    <div class="container section-title" data-aos="fade-up"  data-aos-delay="100">
         <h2>Testimonials</h2>
         <p>What our clients say about our work.</p>
     </div><!-- End Section Title -->
@@ -791,14 +735,14 @@
 
 
 <!-- /Testimonials Section -->
-  <div class="section-title">
+  <div class="section-title" data-aos="fade-up" data-aos-delay="100">
     <h2>Contact Me</h2>
     <p>Get in touch with us</p>
   </div>
 <!-- /Contact Section -->
 <section id="contact" class="contact section">
 
-  <div class="container" data-aos="fade-up">
+  <div class="container" data-aos="fade-up"  data-aos-delay="100">
     <div class="row">
       <div class="col-lg-6" style="background-color: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px;">
         <div class="info">
@@ -864,7 +808,7 @@
             <a href="https://wa.me/8801626476168"><i class="bi bi-whatsapp"></i></a>
             <a href="https://www.linkedin.com/in/sa-anik-a803b2193/"><i class="bi bi-linkedin"></i></a>
         </div>
-        <div class="container">
+        <div class="container" style="padding-top:10px !important;">
             <div class="copyright">
                 <span>Copyright & Designed by</span> <strong class="px-1 sitename">Sajjad Ahmed Anik</strong> <span>All Rights Reserved</span>
             </div>
@@ -902,106 +846,111 @@
 <script src="{% static 'js/main.js' %}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Portfolio nav button functionality
   const navButtons = document.querySelectorAll('.nav-button');
   const portfolioItems = document.querySelectorAll('.portfolio-items');
 
-  navButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const target = button.getAttribute('data-target');
+  if (navButtons.length && portfolioItems.length) {
+    navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-target');
 
-      // Remove active class from all portfolio items
-      portfolioItems.forEach(item => {
-        item.classList.remove('active');
+        portfolioItems.forEach(item => item.classList.remove('active'));
+        navButtons.forEach(btn => btn.classList.remove('active'));
+
+        const targetItem = document.getElementById(target);
+        if (targetItem) {
+          targetItem.classList.add('active');
+        }
+        button.classList.add('active');
       });
-
-      // Remove active class from all buttons
-      navButtons.forEach(btn => {
-        btn.classList.remove('active');
-      });
-
-      // Add active class to the target portfolio items
-      document.getElementById(target).classList.add('active');
-
-      // Add active class to the clicked button//
-      button.classList.add('active');
     });
-  });
 
-  // Set the first section to be active by default
-  document.getElementById('shipping').classList.add('active');
-  navButtons[0].classList.add('active');
-});
+    // Activate the first section by default
+    const defaultItem = document.getElementById('shipping');
+    if (defaultItem) {
+      defaultItem.classList.add('active');
+    }
+    if (navButtons[0]) {
+      navButtons[0].classList.add('active');
+    }
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-  new Swiper('.init-swiper', {
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-  });
-});
+  // Swiper initialization
+  if (document.querySelector('.init-swiper')) {
+    new Swiper('.init-swiper', {
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  }
 
-const divElement = document.getElementById('myDiv'); // Replace 'myDiv' with your div's ID
+  // Fetch content for div (e.g., from /contact/)
+  const divElement = document.getElementById('myDiv');
+  if (divElement) {
+    fetch('http://127.0.0.1:8000/contact/')
+      .then(response => response.json())
+      .then(data => {
+        divElement.textContent = data.message ?? 'No message received';
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        divElement.textContent = 'Error loading content';
+      });
+  }
 
-fetch('http://127.0.0.1:8000/contact/') // Replace with your API endpoint
-  .then(response => response.json())
-  .then(data => {
-    // Assuming the JSON data has a 'message' property
-    divElement.textContent = data.message;
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contact-form');
+  // AJAX contact form submission
+  const form = document.getElementById('contact-form');
+  if (form) {
     form.addEventListener('submit', function(event) {
-        event.preventDefault();
+      event.preventDefault();
+      const formData = new FormData(form);
+      const url = form.getAttribute('action');
 
-        const formData = new FormData(form);
-        const url = form.getAttribute('action');
-
-        fetch(url, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const alertDiv = document.getElementById('alert-message');
-            alertDiv.style.display = 'block';
-            if (data.success) {
-                alertDiv.className = 'alert alert-success';
-                alertDiv.innerHTML = data.message;
-                form.reset();
-            } else {
-                alertDiv.className = 'alert alert-danger';
-                alertDiv.innerHTML = data.message;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            const alertDiv = document.getElementById('alert-message');
-            alertDiv.style.display = 'block';
-            alertDiv.className = 'alert alert-danger';
-            alertDiv.innerHTML = 'An unexpected error occurred.';
-        });
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        const alertDiv = document.getElementById('alert-message');
+        if (alertDiv) {
+          alertDiv.style.display = 'block';
+          alertDiv.className = data.success ? 'alert alert-success' : 'alert alert-danger';
+          alertDiv.innerHTML = data.message;
+        }
+        if (data.success) {
+          form.reset();
+        }
+      })
+      .catch(error => {
+        console.error('Error submitting form:', error);
+        const alertDiv = document.getElementById('alert-message');
+        if (alertDiv) {
+          alertDiv.style.display = 'block';
+          alertDiv.className = 'alert alert-danger';
+          alertDiv.innerHTML = 'An unexpected error occurred.';
+        }
+      });
     });
+  }
 });
-
 </script>
+
 <!-- Optional Bootstrap JS and Font Awesome for icons -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
@@ -1009,6 +958,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
   const githubUsername = "anik588";
   const apiUrl = `https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=3`; // Fetch 3 repos
@@ -1048,6 +998,8 @@ document.addEventListener('DOMContentLoaded', function() {
   fetchGitHubProfile();
   fetchGitHubRepos();
 </script>
+
+
 </body>
 
 </html>

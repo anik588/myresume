@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ model_name }} Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .floating-label input:focus + label,
+    .floating-label input:not(:placeholder-shown) + label,
+    .floating-label textarea:focus + label,
+    .floating-label textarea:not(:placeholder-shown) + label {
+      transform: scale(0.85) translateY(-1.5rem);
+      color: #2563eb;
+    }
+    .floating-label label {
+      transition: all 0.2s ease-in-out;
+    }
+    input, textarea, select {
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+{% include 'dashboard/admin_navbar.html' %}
+<div class="bg-gradient-to-br from-[#f1f5f9] via-[#dbeafe] to-[#f0fdf4] min-h-screen px-4 py-10 relative overflow-x-hidden">
+
+<!-- 🎨 Abstract Background Effects -->
+<div class="absolute -top-32 -left-32 w-96 h-96 bg-blue-300 opacity-20 rounded-full blur-3xl animate-pulse"></div>
+<div class="absolute bottom-0 right-0 w-96 h-96 bg-green-300 opacity-20 rounded-full blur-3xl animate-pulse"></div>
+
+<!-- 🧾 Form Container -->
+<div class="relative z-10 mx-auto max-w-2xl w-full bg-[#A8E4A0] rounded-2xl shadow-xl p-8 mt-10 text-white">
+
+  <h1 class="text-3xl font-bold mb-8 text-center text-blue-800">
+    {% if is_edit %}✏️ Edit{% else %}➕ Add{% endif %} {{ model_name }}
+  </h1>
+
+  <form method="post" enctype="multipart/form-data" class="space-y-6">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="relative w-full mb-6">
+        <label for="{{ field.id_for_label }}" class="block text-lg mb-2">
+          {{ field.label }}
+        </label>
+        {{ field }}
+
+        <div class="mt-2">
+          {% if field.help_text %}
+            <p class="text-sm text-gray-500">{{ field.help_text }}</p>
+          {% endif %}
+          {% for error in field.errors %}
+            <p class="text-sm text-red-500">{{ error }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+
+    {% endfor %}
+
+    <div class="flex justify-between items-center mt-6">
+      <a href="{% url 'model_list' model_name %}" class="text-gray-500 hover:text-gray-700 underline text-sm">← Back to List</a>
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-300">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+
+</div>
+</body>
+</html>

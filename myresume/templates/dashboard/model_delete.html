@@ -1,0 +1,23 @@
+{% load custom_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delete {{ model_name }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-red-100 to-white min-h-screen p-6">
+
+<h1 class="text-2xl font-bold mb-4">Confirm Delete</h1>
+
+<p class="mb-4">Are you sure you want to delete: <strong>{{ object }}</strong>?</p>
+
+<form method="post" class="inline-block">
+  {% csrf_token %}
+  <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Yes, Delete</button>
+</form>
+<a href="{% url 'model_list' model_name %}" class="ml-4">Cancel</a>
+
+</body>
+</html>

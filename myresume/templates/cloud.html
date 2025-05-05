@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blue Smoke and Flame Cursor Effect</title>
+  <style>
+    .tracking-area {
+      width: 80vw;
+      height: 120vh;
+      background-image: url("{% static 'img/honeycomb-bg.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <div class="tracking-area" id="tracking-area">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const trackingArea = document.getElementById('tracking-area');
+
+    canvas.width = trackingArea.offsetWidth;
+    canvas.height = trackingArea.offsetHeight;
+
+    const smokeParticles = [];
+    const maxParticles = 100;
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+    let targetX = mouseX;
+    let targetY = mouseY;
+
+    const followSpeed = 0.1; // Smoothness of the following effect
+
+    class SmokeParticle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 10 + 10;
+        this.speedX = Math.random() * 2 - 1;
+        this.speedY = Math.random() * 2 - 1;
+        this.alpha = 1;
+        this.color = 'rgba(0, 153, 255, 0.5)';
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.alpha -= 0.02;
+        if (this.alpha <= 0) {
+          this.reset();
+        }
+        this.draw();
+      }
+
+      reset() {
+        this.x = targetX + Math.random() * 50 - 25;
+        this.y = targetY + Math.random() * 50 - 25;
+        this.size = Math.random() * 10 + 10;
+        this.speedX = Math.random() * 2 - 1;
+        this.speedY = Math.random() * 2 - 1;
+        this.alpha = 1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+
+    function generateSmokeParticles() {
+      if (smokeParticles.length < maxParticles) {
+        smokeParticles.push(new SmokeParticle(targetX, targetY));
+      }
+    }
+
+    function drawCursorFlame() {
+      const flameColors = ['rgba(0, 204, 255, 0.8)', 'rgba(0, 102, 204, 0.8)', 'rgba(135, 206, 250, 0.8)'];
+      for (let i = 0; i < 3; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const length = Math.random() * 20 + 10;
+        const xEnd = targetX + Math.cos(angle) * length;
+        const yEnd = targetY + Math.sin(angle) * length;
+
+        ctx.beginPath();
+        ctx.moveTo(targetX, targetY);
+        ctx.lineTo(xEnd, yEnd);
+        ctx.strokeStyle = flameColors[i];
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    // Update mouse position with smooth movement for trailing effect
+    function updateMousePositionForSmoke(e) {
+      let targetXNew = e.clientX - trackingArea.offsetLeft;
+      let targetYNew = e.clientY - trackingArea.offsetTop;
+
+      // Smoothly follow the mouse by a smaller distance to create trailing effect
+      targetX += (targetXNew - targetX) * followSpeed;
+      targetY += (targetYNew - targetY) * followSpeed;
+
+      generateSmokeParticles();
+    }
+
+    trackingArea.addEventListener('mousemove', updateMousePositionForSmoke);
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      smokeParticles.forEach(particle => particle.update());
+      drawCursorFlame();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+
+</body>
+</html>

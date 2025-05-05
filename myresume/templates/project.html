@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Portfolio Details</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  {% load static %}
+
+  <!-- Favicons -->
+  <link href="{% static 'img/portfolio-fav.png' %}" rel="icon">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+</head>
+
+<body class="portfolio-details-page">
+
+<div class="mouse-cursor cursor-outer"></div>
+<div class="mouse-cursor cursor-inner" ></div>
+
+  <header id="header" class="header d-flex flex-column justify-content-center">
+    <i class="header-toggle d-xl-none bi bi-list"></i>
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="/#hero"><i class="bi bi-house navicon"></i><span>Home</span></a></li>
+        <li><a href="/#about"><i class="bi bi-person navicon"></i><span>About</span></a></li>
+        <li><a href="/#resume"><i class="bi bi-file-earmark-text navicon"></i><span>Resume</span></a></li>
+        <li><a href="/#portfolio"><i class="bi bi-images navicon"></i><span>Portfolio</span></a></li>
+        <li><a href="/#services"><i class="bi bi-hdd-stack navicon"></i><span>Testimonials</span></a></li>
+        <li><a href="/#contact"><i class="bi bi-envelope navicon"></i><span>Contact</span></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade">
+      <div class="container">
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">Portfolio Details</li>
+          </ol>
+        </nav>
+        <h1>{{ project.name }} - Portfolio Details</h1>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details section">
+
+      <div class="container" data-aos="fade-up">
+
+        <div class="portfolio-details-slider swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "navigation": {
+                "nextEl": ".swiper-button-next",
+                "prevEl": ".swiper-button-prev"
+              },
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              }
+            }
+          </script>
+
+          <div class="swiper-wrapper align-items-center">
+            {% if project.image_1 %}
+              <div>
+                <img src="{{ project.image_1.url }}" class="img-fluid" alt="Project Image 1">
+              </div>
+            {% endif %}
+
+            {% if project.image_2 %}
+              <div>
+                <img src="{{ project.image_2.url }}" class="img-fluid" alt="Project Image 2">
+              </div>
+            {% endif %}
+
+            {% if project.image_3 %}
+              <div>
+                <img src="{{ project.image_3.url }}" class="img-fluid" alt="Project Image 3">
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+        <div class="row justify-content-between gy-4 mt-4">
+
+          <div class="col-lg-8" data-aos="fade-up">
+            <div class="portfolio-description">
+              <h2>{{ project.name }}</h2>
+              <p>{{ project.description }}</p>
+
+              {% if project.client_review %}
+                <div class="testimonial-item">
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    <span>{{ project.client_review }}</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
+                  <div>
+                    {% if project.client_portfolio_pic %}
+                      <img src="{{ project.client_portfolio_pic.url }}" class="testimonial-img" alt="Client Image">
+                    {% endif %}
+                    {% if project.client_profile_link %}
+                      <a href="{{ project.client_profile_link }}"> <h3>{{ project.client_name }}</h3></a>
+                    {% endif %}
+                    {% if project.client_name %}
+                      <h4>{{ project.client_name }}</h4>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="col-lg-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="portfolio-info">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong> Web design</li>
+                <li><strong>Client</strong> {% if project.client_name %} {{ project.client_name }} {% else %} N/A {% endif %}</li>
+                <li><strong>Project date</strong> {{ project.created_at|date:"d M, Y" }}</li>
+                <li><strong>Project URL</strong> <a href="{{ project.project_link }}">{{ project.project_link }}</a></li>
+                <li><a href="{{ project.project_link }}" class="btn-visit align-self-start">Visit Website</a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Portfolio Details Section -->
+
+  </main>
+
+  <footer id="footer" class="footer position-relative light-background">
+    <div class="container">
+        <h3 class="sitename">Sajjad Ahmed Anik</h3>
+        <p style="font-family: 'Mrs Eaves', serif; font-style: italic; font-size: 20px;">Believe in Providing Clients better support with care</p>
+        <div class="social-links d-flex justify-content-center">
+          <a href="https://x.com/sajjad_anik588"><i class="bi bi-twitter-x"></i></a>
+          <a href="https://www.facebook.com/sa.anik24"><i class="bi bi-facebook"></i></a>
+          <a href="https://www.instagram.com/_sajjad.anik_/"><i class="bi bi-instagram"></i></a>
+          <a href="https://wa.me/8801626476168"><i class="bi bi-whatsapp"></i></a>
+          <a href="https://www.linkedin.com/in/sa-anik-a803b2193/"><i class="bi bi-linkedin"></i></a>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <span>Copyright & Designed by</span> <strong class="px-1 sitename">Sajjad Ahmed Anik</strong> <span>All Rights Reserved</span>
+            </div>
+        </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/typed.js/typed.umd.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/waypoints/noframework.waypoints.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

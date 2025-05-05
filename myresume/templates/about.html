@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me & Resume</title>
+
+    <!-- Load static files -->
+  {% load static %}
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AOS CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+
+  <style>
+    /* Fullscreen background canvas */
+.canvas-css {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+    #custom-title {
+      text-align: center;
+      font-size: 3rem;
+      color: #58a6ff;
+      margin-top: 10px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    #custom-container {
+      margin-top: 20px;
+    }
+
+
+#custom-title,
+#custom-container {
+  position: relative;
+  z-index: 1;
+}
+
+    /* Image Circle Styling */
+    .img-container {
+      width: 150px;
+      height: 150px;
+      max-width: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid #58a6ff;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .custom-card {
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      color: #111;
+
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .custom-card:hover {
+      transform: scale(1.05);
+    }
+
+    .custom-card h3 {
+      color: #58a6ff;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .custom-card p {
+      margin: 10px 0;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .col-md-6 {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      flex: 1 1 48%;
+    }
+
+    @media (max-width: 768px) {
+      .col-md-6 {
+        flex: 1 1 100%;
+      }
+      #custom-title {
+        font-size: 2rem;
+      }
+      .custom-card h3 {
+        font-size: 1.2rem;
+      }
+      .img-container {
+        width: 130px;
+        height: 130px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 3D background particle system -->
+  <canvas id="canvas" class="canvas-css"></canvas>
+
+
+<div id="custom-container" class="container py-5">
+  <div class="row g-4 justify-content-center">
+
+    <!-- Left Section -->
+    <div class="col-lg-5 col-md-10 col-sm-12 d-flex flex-column align-items-center">
+      <div class="img-container mb-4 text-center">
+        <img src="{% static 'img/resume-pic-blue-2.png' %}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 180px; height: 180px; object-fit: cover;">
+      </div>
+
+<div class="row">
+
+  <!-- Left Section: 1st category -->
+  <div class="col-md-6">
+    <div class="profile-sections">
+      {% if profile_categories|length > 0 %}
+        {% with category=profile_categories.0 %}
+          <div class="profile-section">
+            <div class="profile-header">
+              <span class="left-icon">💻</span>
+              <h3>{{ category.name }}</h3>
+            </div>
+            {% for content in category.content.all %}
+              <p>{{ content.content|safe }}</p>
+            {% endfor %}
+          </div>
+        {% endwith %}
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right Section: 2nd & 3rd categories -->
+  <div class="col-md-6">
+    <div class="row">
+      {% for category in profile_categories|slice:"1:3" %}
+        <div class="col-12 mb-4">
+          <div class="profile-section">
+            <div class="profile-header">
+              <span class="right-icon">
+                {% if forloop.first %}🔬{% else %}🧠{% endif %}
+              </span>
+              <h3>{{ category.name }}</h3>
+            </div>
+            {% for content in category.content.all %}
+              <p>{{ content.content|safe }}</p>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+
+<!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Your JS for Particle System -->
+  <script>
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+class Visual {
+  constructor() {
+    this.canvas = document.querySelector('#canvas');
+    this.context = this.canvas.getContext('2d');
+    this.particles = [];
+    this.particleLength = 150; // Default number of particles
+    this.particleMaxRadius = 8; // Max radius of particles
+
+    this.init();
+  }
+
+  init() {
+    this.resizeCanvas();
+    this.createParticles();
+    this.addEventListeners();
+    this.render();
+  }
+
+  resizeCanvas() {
+    // Set the canvas to the full window size and scale it
+    this.canvas.width = window.innerWidth * window.devicePixelRatio;
+    this.canvas.height = window.innerHeight * window.devicePixelRatio;
+    this.context.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+    // Update canvas width/height
+    this.canvasWidth = window.innerWidth;
+    this.canvasHeight = window.innerHeight;
+
+    // Adjust particle count and size for responsiveness
+    this.particleLength = Math.max(100, Math.floor(this.canvasWidth / 6)); // Number of particles based on width
+    this.particleMaxRadius = Math.min(8, Math.max(5, this.canvasWidth / 100)); // Particle size based on width
+    this.particles = []; // Reset particles
+    this.createParticles(); // Re-create particles after resizing
+  }
+
+  createParticles() {
+    for (let i = 0; i < this.particleLength; i++) {
+      this.particles.push(this.createParticle(i));
+    }
+  }
+
+  createParticle(id, isRecreate = false) {
+    const radius = random(1, this.particleMaxRadius);
+    const x = isRecreate ? -radius - random(0, this.canvasWidth) : random(0, this.canvasWidth);
+    const y = random(this.canvasHeight / 2 - 150, this.canvasHeight / 2 + 150) + random(-100, 100);
+    const alpha = random(0.05, 1);
+
+    return {
+      id,
+      x,
+      y,
+      startY: y,
+      radius,
+      defaultRadius: radius,
+      startAngle: 0,
+      endAngle: Math.PI * 2,
+      alpha,
+      color: { r: random(0, 100), g: random(0, 100), b: 255 },
+      speed: alpha + 1,
+      amplitude: random(50, 200),
+      isBurst: false
+    };
+  }
+
+  addEventListeners() {
+    this.onMouseMove = this.handleMouseMove.bind(this);
+    this.onClick = this.handleClick.bind(this);
+    this.onResize = this.handleResize.bind(this);
+
+    document.body.addEventListener('mousemove', this.onMouseMove);
+    document.body.addEventListener('click', this.onClick);
+    window.addEventListener('resize', this.onResize);
+  }
+
+  removeEventListeners() {
+    document.body.removeEventListener('mousemove', this.onMouseMove);
+    document.body.removeEventListener('click', this.onClick);
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  handleMouseMove(e) {
+    this.enlargeNearbyParticles(e.clientX, e.clientY);
+  }
+
+  handleClick(e) {
+    this.burstParticles(e.clientX, e.clientY);
+  }
+
+  handleResize() {
+    this.resizeCanvas();
+  }
+
+  enlargeNearbyParticles(mouseX, mouseY) {
+    this.particles.forEach(p => {
+      if (p.isBurst) return;
+
+      const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
+      const threshold = 100;
+
+      if (dist <= threshold) {
+        const scale = (threshold - dist) / 1.5;
+        TweenMax.to(p, 0.5, {
+          radius: p.defaultRadius + scale,
+          ease: Power2.easeOut
+        });
+      } else {
+        TweenMax.to(p, 0.5, {
+          radius: p.defaultRadius,
+          ease: Power2.easeOut
+        });
+      }
+    });
+  }
+
+  burstParticles(mouseX, mouseY) {
+    this.particles.forEach(p => {
+      const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
+
+      if (dist <= 100) {
+        p.isBurst = true;
+        TweenMax.to(p, 0.5, {
+          radius: p.defaultRadius + 200,
+          alpha: 0,
+          ease: Power2.easeOut,
+          onComplete: () => {
+            this.particles[p.id] = this.createParticle(p.id, true);
+          }
+        });
+      }
+    });
+  }
+
+  moveParticle(p) {
+    p.x += p.speed;
+    p.y = p.startY + p.amplitude * Math.sin((p.x / 5) * (Math.PI / 180));
+  }
+
+  drawParticles() {
+    this.particles.forEach(p => {
+      this.moveParticle(p);
+      this.context.beginPath();
+      this.context.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${p.alpha})`;
+      this.context.arc(p.x, p.y, p.radius, p.startAngle, p.endAngle);
+      this.context.fill();
+    });
+  }
+
+  render() {
+    this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.drawParticles();
+
+    this.particles.forEach(p => {
+      if (p.x - p.radius >= this.canvasWidth) {
+        this.particles[p.id] = this.createParticle(p.id, true);
+      }
+    });
+
+    requestAnimationFrame(this.render.bind(this));
+  }
+}
+
+new Visual();
+
+  </script>
+
+  <script>
+    AOS.init({
+      duration: 1000,
+    });
+  </script>
+
+</body>
+</html>
