@@ -1,0 +1,11 @@
+Model Information:
+* title:	moon
+* source:	https://sketchfab.com/3d-models/moon-c5ace5e97e894f19b06bc5cd890ddbe2
+* author:	Waiz (https://sketchfab.com/Waiz)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "moon" (https://sketchfab.com/3d-models/moon-c5ace5e97e894f19b06bc5cd890ddbe2) by Waiz (https://sketchfab.com/Waiz) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

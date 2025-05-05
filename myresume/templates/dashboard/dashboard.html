@@ -1,0 +1,63 @@
+{% load static %}
+{% load custom_tags %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Custom Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  {% include 'dashboard/admin_navbar.html' %}
+
+  <div class="bg-gradient-to-br from-indigo-100 to-white min-h-screen p-6 text-gray-800">
+
+    <main class="flex-grow bg-blue-800 p-8 rounded-lg shadow-md mb-4">
+      <div class="text-center text-white">
+        <h2 class="text-3xl font-semibold mb-4">Welcome to Your Dashboard</h2>
+        <p class="text-xl">You can manage everything from here!</p>
+      </div>
+    </main>
+
+    <!-- Admin-Related Models Section (smaller models) -->
+    <h2 class="text-2xl font-bold mb-4">Admin Models</h2>
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full mt-6">
+      {% for model in models %}
+        {% if model.name == "User" or model.name == "Group" or model.name == "Permission" or model.name == "LogEntry" or model.name == "ContentType" or model.name == "Session" %}
+          <!-- Smaller size for User-related models -->
+          <a href="{% url 'model_list' model.name %}" class="block p-4 bg-white shadow rounded hover:shadow-lg transition transform hover:scale-105">
+            <h2 class="text-xl font-semibold">{{ model.name|split_camel_case }}</h2>
+
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Main Models Section (larger models) -->
+    <h2 class="text-2xl font-bold mt-10 mb-4">Main Models</h2>
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full mt-6">
+      {% for model in models %}
+        {% if model.name != "User" and model.name != "Group" and model.name != "Permission" and model.name != "LogEntry" and model.name != "ContentType" and model.name != "Session" %}
+          <!-- Larger size for main models like Project, Category, etc. -->
+          <a href="{% url 'model_list' model.name %}" class="block p-6 bg-white shadow rounded hover:shadow-lg transition transform hover:scale-110">
+            <h2 class="text-xl font-semibold">{{ model.name|split_camel_case }}</h2>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Recent Entries Section -->
+    <h2 class="text-2xl font-bold mt-10 mb-4">🕒 Recent Entries</h2>
+    <ul class="space-y-2">
+      {% for name, item in recent %}
+        <li class="bg-white p-4 rounded shadow">
+          <strong>{{ name }}:</strong> {{ item }}
+          <a href="{% url 'model_edit' name item.pk %}" class="text-blue-600 ml-4">Edit</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+</body>
+</html>
