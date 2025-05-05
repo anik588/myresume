@@ -1,1 +1,1 @@
-web: gunicorn myresume.wsgi:application
+web: gunicorn myresume.myresume.myresume.wsgi:application
