@@ -10,7 +10,7 @@ DEBUG = True
 print(os.path.join(BASE_DIR, '../static/assets/'))  # This should point to your static directory
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
