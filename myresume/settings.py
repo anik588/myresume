@@ -83,8 +83,9 @@ LOGIN_REDIRECT_URL = '/admin/User/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://sajjad-anik.up.railway.app',
+    "https://sajjad-anik.up.railway.app"
 ]
+
 
 
 LANGUAGE_CODE = 'en-us'
