@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-4(@l6^@5fr1jx(5#k@-+j!%c!p7l-*(s%a5co@$xlyy)k*olbp
 
 DEBUG = True
 
-print(os.path.join(BASE_DIR, 'static/assets/'))  # This should point to your static directory
+print(os.path.join(BASE_DIR, '../static/assets/'))  # This should point to your static directory
 
 
 ALLOWED_HOSTS = []
@@ -39,7 +39,7 @@ ROOT_URLCONF = 'myresume.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Ensure 'templates' folder is correctly set
+        'DIRS': [os.path.join(BASE_DIR, '../home/templates')],  # Ensure 'templates' folder is correctly set
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,13 +94,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static/assets/')
+    os.path.join(BASE_DIR, 'myresume/static/assets/')
 ]
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 
 # Media files (uploads)
 MEDIA_URL = '/media/'  # The URL for accessing media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The directory to store uploaded media files
+MEDIA_ROOT = os.path.join(BASE_DIR, '../media')  # The directory to store uploaded media files
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

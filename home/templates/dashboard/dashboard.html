@@ -1,0 +1,65 @@
+{% load static %}
+{% load custom_tags %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Custom Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-100 to-white min-h-screen text-gray-800">
+
+  {% include 'dashboard/admin_navbar.html' %}
+
+  <main class="p-6">
+    <div class="bg-blue-800 text-white rounded-lg p-8 shadow-md text-center mb-10">
+      <h2 class="text-3xl font-semibold mb-2">Welcome to Your Dashboard</h2>
+      <p class="text-lg">Manage everything from this central panel</p>
+    </div>
+
+  <!-- 🔒 Admin Models -->
+<h2 class="text-2xl font-bold mb-4">🔐 Admin Models</h2>
+<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  {% for model in admin_models %}
+    <a href="{% url 'model_list' model.name %}" class="block p-4 bg-white shadow rounded hover:shadow-lg transition transform hover:scale-105">
+      <h2 class="text-xl font-semibold">{{ model.verbose_name }}</h2>
+    </a>
+  {% endfor %}
+</div>
+
+<!-- 📁 Project Models -->
+<h2 class="text-2xl font-bold mt-10 mb-4">📁 Project Models</h2>
+<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  {% for model in project_models %}
+    <a href="{% url 'model_list' model.name %}" class="block p-6 bg-white shadow rounded hover:shadow-lg transition transform hover:scale-110">
+      <h2 class="text-xl font-semibold">{{ model.verbose_name }}</h2>
+    </a>
+  {% endfor %}
+</div>
+
+<!-- 👤 Profile Models -->
+<h2 class="text-2xl font-bold mt-10 mb-4">👤 Profile Models</h2>
+<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  {% for model in profile_models %}
+    <a href="{% url 'model_list' model.name %}" class="block p-6 bg-white shadow rounded hover:shadow-lg transition transform hover:scale-110">
+      <h2 class="text-xl font-semibold">{{ model.verbose_name }}</h2>
+    </a>
+  {% endfor %}
+</div>
+
+    <!-- 🕒 Recent Entries Section -->
+    <h2 class="text-2xl font-bold mt-12 mb-4">🕒 Recent Entries</h2>
+    <ul class="space-y-2">
+      {% for name, item in recent %}
+        <li class="bg-white p-4 rounded shadow">
+          <strong>{{ name|split_camel_case }}:</strong> {{ item }}
+          <a href="{% url 'model_edit' name item.pk %}" class="text-blue-600 ml-4">Edit</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+  </main>
+
+</body>
+</html>
