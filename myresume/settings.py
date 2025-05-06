@@ -82,6 +82,9 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/admin/User/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://sajjad-anik.up.railway.app',
+]
 
 
 LANGUAGE_CODE = 'en-us'
@@ -97,6 +100,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'myresume/static/assets/')
 ]
+
+
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
