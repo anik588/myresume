@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-4(@l6^@5fr1jx(5#k@-+j!%c!p7l-*(s%a5co@$xlyy)k*olbp'
 
-DEBUG = True
+DEBUG = False
 
 print(os.path.join(BASE_DIR, '../static/assets/'))  # This should point to your static directory
 
@@ -85,9 +85,11 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = [
-    "*"
+    "https://sajjad-anik.up.railway.app"
 ]
 
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Strict'
 
 
 LANGUAGE_CODE = 'en-us'
