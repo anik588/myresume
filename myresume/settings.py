@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-4(@l6^@5fr1jx(5#k@-+j!%c!p7l-*(s%a5co@$xlyy)k*olbp'
 
-DEBUG = False
+DEBUG = True
 
 print(os.path.join(BASE_DIR, '../static/assets/'))  # This should point to your static directory
 
@@ -89,7 +89,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 
 LANGUAGE_CODE = 'en-us'
@@ -113,7 +113,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Media files (uploads)
 MEDIA_URL = '/media/'  # The URL for accessing media files
-MEDIA_ROOT = os.path.join(BASE_DIR, '../media')  # The directory to store uploaded media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'myresume', 'media')
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

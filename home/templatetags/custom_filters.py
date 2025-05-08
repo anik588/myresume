@@ -20,5 +20,8 @@ register = template.Library()
 
 @register.filter(name='split_camel_case')
 def split_camel_case(value):
-    # This regular expression splits camel case into separate words
     return re.sub(r'([a-z])([A-Z])', r'\1 \2', value)
+
+@register.filter(name='get_item')
+def get_item(dictionary, key):
+    return dictionary.get(key, '')

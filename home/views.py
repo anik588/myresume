@@ -184,39 +184,38 @@ def dashboard_home(request):
 
 
 # ✅ List all objects of a model
+
+from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.apps import apps
+
+
 @login_required
 def model_list(request, model_name):
-    # Dynamically get model from string
-    model = get_model_by_name(model_name)
+    # Dynamically get the model from the model_name passed to the view
+    model = apps.get_model('home', model_name)  # Replace 'your_app_name' with your app's name
 
-    # Fetch all objects for this model
+    # Get all objects from the model
     objects = model.objects.all()
 
-    # Pagination (optional: for large datasets)
+    # Pagination (optional, for large data sets)
     page = request.GET.get('page', 1)
-    paginator = Paginator(objects, 10)
+    paginator = Paginator(objects, 10)  # 10 items per page
     paginated_objects = paginator.get_page(page)
 
-    # Get model fields
-    fields = model._meta.fields
+    # Get model fields (list of fields you want to display in your table)
+    fields = [field.name for field in model._meta.fields]
 
-    # Build object-value list
+    # Prepare the objects_with_values (each row is a dictionary with 'object' and 'values' list)
     objects_with_values = []
     for obj in paginated_objects:
-        values = [field.value_from_object(obj) for field in fields]
+        values = [getattr(obj, field) for field in fields]
         objects_with_values.append({'object': obj, 'values': values})
 
-    # Color assignment (optional)
-    user_id = request.user.id or 0
-    colors = ['red', 'blue', 'green', 'orange', 'indigo', 'teal', 'pink', 'yellow', 'purple', 'rose']
-    user_color = colors[user_id % len(colors)]
-
-    # Render the template
     return render(request, 'dashboard/model_list.html', {
-        'fields': fields,
         'objects_with_values': objects_with_values,
+        'fields': fields,
         'model_name': model_name,
-        'user_color': user_color,
     })
 
 

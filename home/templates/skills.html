@@ -9,21 +9,23 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
   <style>
-    #page-wrapper {
+ #page-wrapper {
+  width: 100%;
+  height: 100vh; /* Full height section */
+  background-color: black;
+  overflow: hidden;
+  position: relative;
+}
 
-      width: 100%;
-      height: 80vh;
-  overflow: visible;
-      background-color: black;
-    }
-
-
-    #3d-container {
-
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
+#3d-container {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
 
     .orbit-icon {
       border-radius: 50%;
@@ -47,7 +49,7 @@
 
     @media (max-width: 480px) {
       #page-wrapper {
-        height: 55vh;
+        height: 70vh;
       }
       .orbit-icon {
         width: 32px;
@@ -84,12 +86,13 @@
   controls.zoomSpeed = 0.6;
   controls.enableZoom = true;
   controls.enableRotate = true;
-  controls.enablePan = false;
-  controls.enableTouchRotate = true;
-  controls.enableTouchZoom = true;
-  controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY };
-controls.minDistance = 3; // how close the camera can get
-controls.maxDistance = 10; // how far the camera can go
+  controls.enablePan = true; // Allow panning
+  controls.enableTouchRotate = true; // Enable touch rotate
+  controls.enableTouchZoom = true;   // Enable touch zoom (pinch zoom)
+  controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY }; // Pinch zoom
+
+  controls.minDistance = 3;  // how close the camera can get
+  controls.maxDistance = 10; // how far the camera can go
 
   // Responsive camera positioning
   if (window.innerWidth < 768) {
@@ -105,7 +108,7 @@ controls.maxDistance = 10; // how far the camera can go
   directionalLight.position.set(5, 5, 5);
   scene.add(directionalLight);
 
-  // Stars
+  // Stars (for visual effect)
   const starGeo = new THREE.SphereGeometry(0.1, 8, 8);
   const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const stars = [];
@@ -116,7 +119,7 @@ controls.maxDistance = 10; // how far the camera can go
     scene.add(star);
   }
 
-  // Load Sun Model
+  // Load Sun Model (or Moon)
   let moonModel;
   const loader = new THREE.GLTFLoader();
   loader.load("{% static 'models/scene.gltf' %}", function (gltf) {
@@ -125,7 +128,7 @@ controls.maxDistance = 10; // how far the camera can go
     scene.add(moonModel);
   });
 
-  // Orbiting skill sprites
+  // Orbiting skill sprites (for skill icons around the model)
   const textureLoader = new THREE.TextureLoader();
   const skills = [
     { name: 'react', src: '{% static "img/skills/react.png" %}', radius: 3.5, speed: 0.0025 },
@@ -153,13 +156,23 @@ controls.maxDistance = 10; // how far the camera can go
     });
   });
 
+  // Rotation limit tracking
+  let modelRotationY = 0;
+  const modelRotationLimit = Math.PI / 2;  // Adjust this to your model's top rotation limit
+
+  // Animate function
   function animate() {
     requestAnimationFrame(animate);
-    if (moonModel) moonModel.rotation.y += 0.002;
 
-    scene.rotation.y += 0.0005; // slowly rotate everything including stars
+    // Stop model rotation once it reaches the limit
+    if (moonModel && modelRotationY < modelRotationLimit) {
+      moonModel.rotation.y += 0.002;  // Rotate the model
+      modelRotationY = moonModel.rotation.y; // Keep track of the model's rotation
+    }
 
-    controls.update();
+    scene.rotation.y += 0.0005; // Slowly rotate everything including stars
+
+    controls.update(); // Update controls (panning, zooming, etc.)
     const t = Date.now() * 0.001;
     orbitSprites.forEach(sprite => {
       const a = sprite.userData.angle + t * sprite.userData.speed * 100;
@@ -172,20 +185,25 @@ controls.maxDistance = 10; // how far the camera can go
       sprite.scale.set(scale, scale, scale);
       sprite.renderOrder = z > 0 ? 2 : 0;
     });
-    renderer.render(scene, camera);
+
+    renderer.render(scene, camera); // Render the scene
   }
 
   animate();
 
+  // Handle window resize
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-
-
+  // Prevent default behavior for touch scrolls (for mobile)
+  container.addEventListener('touchmove', function (event) {
+    event.preventDefault(); // Disable default scrolling on touch events
+  });
 
 </script>
+
 </body>
 </html>

@@ -5,11 +5,8 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Portfolio Details</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
 
   {% load static %}
-
   <!-- Favicons -->
   <link href="{% static 'img/portfolio-fav.png' %}" rel="icon">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
@@ -31,12 +28,115 @@
 
   <!-- Main CSS File -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const swiper = new Swiper('.unique-swiper-container', {
+        loop: true, // Enable infinite loop
+        autoplay: {
+          delay: 5000,  // Set delay for automatic sliding (in milliseconds)
+          disableOnInteraction: false,  // Do not stop autoplay after interaction
+        },
+        pagination: {
+          el: '.unique-swiper-pagination',
+          clickable: true, // Enable pagination clickability
+        },
+        navigation: {
+          nextEl: '.unique-swiper-button-next',
+          prevEl: '.unique-swiper-button-prev',  // Enable next/prev buttons
+        }
+      });
+    });
+  </script>
 </head>
 
-<body class="portfolio-details-page">
+<style>
+  /* Slider container */
+  .unique-swiper-container {
+    width: 80%;
 
-<div class="mouse-cursor cursor-outer"></div>
-<div class="mouse-cursor cursor-inner" ></div>
+    margin: auto;
+    position: relative; /* Position relative to accommodate navigation buttons */
+  }
+
+  /* Ensures that the image fills the container while maintaining aspect ratio */
+  .swiper-wrapper {
+    display: flex;
+  }
+
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .unique-swiper-slide img {
+    width: 400px;  /* Allow the width to scale based on the height */
+    height: 600px;  /* Make the image take full height of the container */
+    object-fit: contain;  /* Ensure the image fits within the container without being cut off */
+  }
+
+  /* Optional: Style the navigation buttons */
+  .unique-swiper-button-next,
+  .unique-swiper-button-prev {
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 24px;
+  }
+
+  .unique-swiper-button-next {
+    right: 10px;
+  }
+
+  .unique-swiper-button-prev {
+    left: 10px;
+  }
+
+  /* Pagination styling */
+  .unique-swiper-pagination {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Make the slider responsive */
+  @media (min-width: 768px) {
+    .unique-swiper-container {
+      height: 650px; /* Set height for larger screens */
+    }
+  }
+
+
+  @media (max-width: 768px) {
+    .unique-swiper-container {
+      height: 450px; /* Set height for larger screens */
+    }
+
+      .unique-swiper-slide img {
+    width: 300px;  /* Allow the width to scale based on the height */
+    height: 400px;  /* Make the image take full height of the container */
+    object-fit: contain;  /* Ensure the image fits within the container without being cut off */
+  }
+
+  .unique-swiper-container {
+    width:100%;
+
+    margin: auto;
+    position: relative; /* Position relative to accommodate navigation buttons */
+  }
+
+  }
+</style>
+
+<body class="portfolio-details-page">
 
   <header id="header" class="header d-flex flex-column justify-content-center">
     <i class="header-toggle d-xl-none bi bi-list"></i>
@@ -53,9 +153,7 @@
   </header>
 
   <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title" data-aos="fade">
+    <div class="page-title">
       <div class="container">
         <nav class="breadcrumbs">
           <ol>
@@ -65,61 +163,44 @@
         </nav>
         <h1>{{ project.name }} - Portfolio Details</h1>
       </div>
-    </div><!-- End Page Title -->
+    </div>
 
-    <!-- Portfolio Details Section -->
-    <section id="portfolio-details" class="portfolio-details section">
-
+    <section id="portfolio-details" class="portfolio-details">
       <div class="container" data-aos="fade-up">
-
+        {% if project.image_1 or project.image_2 or project.image_3 %}
         <div class="portfolio-details-slider swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": "auto",
-              "navigation": {
-                "nextEl": ".swiper-button-next",
-                "prevEl": ".swiper-button-prev"
-              },
-              "pagination": {
-                "el": ".swiper-pagination",
-                "type": "bullets",
-                "clickable": true
-              }
-            }
-          </script>
+          <div class="unique-swiper-container">
+            <div class="swiper-wrapper align-items-center">
+              {% if project.image_1 %}
+                <div class="swiper-slide unique-swiper-slide">
+                  <img src="{{ project.image_1.url }}" class="img-fluid" alt="Project Image 1">
+                </div>
+              {% endif %}
 
-          <div class="swiper-wrapper align-items-center">
-            {% if project.image_1 %}
-              <div>
-                <img src="{{ project.image_1.url }}" class="img-fluid" alt="Project Image 1">
-              </div>
-            {% endif %}
+              {% if project.image_2 %}
+                <div class="swiper-slide unique-swiper-slide">
+                  <img src="{{ project.image_2.url }}" class="img-fluid" alt="Project Image 2">
+                </div>
+              {% endif %}
 
-            {% if project.image_2 %}
-              <div>
-                <img src="{{ project.image_2.url }}" class="img-fluid" alt="Project Image 2">
-              </div>
-            {% endif %}
+              {% if project.image_3 %}
+                <div class="swiper-slide unique-swiper-slide">
+                  <img src="{{ project.image_3.url }}" class="img-fluid" alt="Project Image 3">
+                </div>
+              {% endif %}
+            </div>
 
-            {% if project.image_3 %}
-              <div>
-                <img src="{{ project.image_3.url }}" class="img-fluid" alt="Project Image 3">
-              </div>
-            {% endif %}
+            <!-- Navigation Buttons -->
+            <div class="unique-swiper-button-prev"></div>
+            <div class="unique-swiper-button-next"></div>
+
+            <!-- Pagination -->
+            <div class="unique-swiper-pagination"></div>
           </div>
-
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-pagination"></div>
         </div>
+        {% endif %}
 
         <div class="row justify-content-between gy-4 mt-4">
-
           <div class="col-lg-8" data-aos="fade-up">
             <div class="portfolio-description">
               <h2>{{ project.name }}</h2>
@@ -160,41 +241,34 @@
               </ul>
             </div>
           </div>
-
         </div>
-
       </div>
-
-    </section><!-- /Portfolio Details Section -->
-
+    </section>
   </main>
 
   <footer id="footer" class="footer position-relative light-background">
     <div class="container">
-        <h3 class="sitename">Sajjad Ahmed Anik</h3>
-        <p style="font-family: 'Mrs Eaves', serif; font-style: italic; font-size: 20px;">Believe in Providing Clients better support with care</p>
-        <div class="social-links d-flex justify-content-center">
-          <a href="https://x.com/sajjad_anik588"><i class="bi bi-twitter-x"></i></a>
-          <a href="https://www.facebook.com/sa.anik24"><i class="bi bi-facebook"></i></a>
-          <a href="https://www.instagram.com/_sajjad.anik_/"><i class="bi bi-instagram"></i></a>
-          <a href="https://wa.me/8801626476168"><i class="bi bi-whatsapp"></i></a>
-          <a href="https://www.linkedin.com/in/sa-anik-a803b2193/"><i class="bi bi-linkedin"></i></a>
+      <h3 class="sitename">Sajjad Ahmed Anik</h3>
+      <p style="font-family: 'Mrs Eaves', serif; font-style: italic; font-size: 20px;">Believe in Providing Clients better support with care</p>
+      <div class="social-links d-flex justify-content-center">
+        <a href="https://x.com/sajjad_anik588"><i class="bi bi-twitter-x"></i></a>
+        <a href="https://www.facebook.com/sa.anik24"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.instagram.com/_sajjad.anik_/"><i class="bi bi-instagram"></i></a>
+        <a href="https://wa.me/8801626476168"><i class="bi bi-whatsapp"></i></a>
+        <a href="https://www.linkedin.com/in/sa-anik-a803b2193/"><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div class="container">
+        <div class="copyright">
+          <span>Copyright & Designed by</span> <strong class="px-1 sitename">Sajjad Ahmed Anik</strong> <span>All Rights Reserved</span>
         </div>
-        <div class="container">
-            <div class="copyright">
-                <span>Copyright & Designed by</span> <strong class="px-1 sitename">Sajjad Ahmed Anik</strong> <span>All Rights Reserved</span>
-            </div>
-        </div>
+      </div>
     </div>
   </footer>
 
-  <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Preloader -->
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
   <script src="{% static 'vendor/aos/aos.js' %}"></script>
@@ -205,8 +279,6 @@
   <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
   <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
   <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
-
-  <!-- Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
 
 </body>

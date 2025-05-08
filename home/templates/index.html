@@ -345,15 +345,24 @@
       }
     }
 
+/* -- Curser --*/
+
+  @media (max-width: 767px) {
+    .cursor-container {
+      display: none !important;
+    }
+  }
+
 </style>
 </head>
 
 <body class="index-page">
 
-<div class="cursor-container">
-    <div class="cursor-inner"></div>
-    <div class="cursor-outer"></div>
+<div class="cursor-container" style="display: block;">
+  <div class="cursor-inner"></div>
+  <div class="cursor-outer"></div>
 </div>
+
 
 
   <header id="header" class="header d-flex flex-column justify-content-center">
@@ -404,12 +413,12 @@
 
 <!-- Social Bar -->
 <div class="wide-social-bar">
-  <a href="https://www.upwork.com" class="icon-upwork" target="_blank" title="Upwork">
+  <a href="https://www.upwork.com/freelancers/~0150c7d807dd9acf09" class="icon-upwork" target="_blank" title="Upwork">
     <div class="circle-icon"><i class="fab fa-upwork"></i></div>
     <div class="icon-title">Upwork</div>
   </a>
 
-  <a href="https://www.fiverr.com" class="icon-fiverr" target="_blank" title="Fiverr">
+  <a href="https://www.fiverr.com/sa_anik24" class="icon-fiverr" target="_blank" title="Fiverr">
     <div class="circle-icon" >
       <!-- Replace with your SVG path for Fiverr -->
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" viewBox="0 0 50 50">
@@ -419,12 +428,12 @@
     <div class="icon-title">Fiverr</div>
   </a>
 
-  <a href="https://www.linkedin.com" class="icon-linkedin" target="_blank" title="LinkedIn">
+  <a href="https://www.linkedin.com/in/sa-anik-a803b2193/" class="icon-linkedin" target="_blank" title="LinkedIn">
     <div class="circle-icon"><i class="fab fa-linkedin-in"></i></div>
     <div class="icon-title">LinkedIn</div>
   </a>
 
-  <a href="https://github.com" class="icon-github" target="_blank" title="GitHub">
+  <a href="https://github.com/anik588" class="icon-github" target="_blank" title="GitHub">
     <div class="circle-icon"><i class="fab fa-github"></i></div>
     <div class="icon-title">GitHub</div>
   </a>
@@ -446,25 +455,26 @@
 
       <!--      GitHub Section Start   -->
 
-<!--<div class="github-section" id="github">
-  &lt;!&ndash; Portfolio Header with GitHub Logo &ndash;&gt;
+<div class="github-section" id="github">
+  <!-- Portfolio Header with GitHub Logo -->
   <div class="portfolio-header">
     <h2>My GitHub Portfolio <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="github-logo" alt="GitHub Logo"></h2>
   </div>
 
-  &lt;!&ndash; GitHub Profile &ndash;&gt;
+  <!-- GitHub Profile -->
   <div class="github-profile" >
     <img id="github-profile-img" class="github-profile-img" src="" alt="Profile Image">
     <h3 id="github-username" class="mb-0 mt-3" style="color: white;"></h3>
-    <p id="github-bio" class="mt-2" style="font-size: 0.9rem;"></p> &lt;!&ndash; GitHub bio under the name &ndash;&gt;
+    <p id="github-bio" class="mt-2" style="font-size: 0.9rem;"></p> <!-- GitHub bio under the name -->
   </div>
 
-  &lt;!&ndash; Section Title &ndash;&gt;
+  <!-- Section Title -->
   <h4 class="text-center"style="color: green;">My GitHub Repositories</h4>
 
-  &lt;!&ndash; Recent Repositories &ndash;&gt;
+  <!-- Recent Repositories -->
   <div id="github-repos" class="repo-list"></div>
-</div>-->
+
+</div>
 <!--            Github Section END    -->
 
       <!-- Skill Section Start -->
@@ -477,9 +487,7 @@
   <h3>To Be Play, Drag to rotate • Pinch/scroll to zoom</h3>
 </div>
 
-
       </div><!-- End Section Title -->
-
 
 
      {% include 'skills.html' %}
@@ -490,7 +498,6 @@
 
 
       <!-- 🚀 Drop-In Voyage Style Slider | Paste into index.html -->
-
 
 <section id="portfolio" class="py-8 mx-auto" style="width: 80%;">
   <div class="container section-title mx-auto text-center mb-6">
@@ -511,6 +518,7 @@
 
   <!-- Slider Section -->
   <div class="relative w-full max-w-5xl mx-auto overflow-hidden">
+
     <!-- Left Arrow -->
     <button class="arrow left absolute top-1/2 -translate-y-1/2 left-0 z-10 p-3 bg-blue-600 text-white rounded-full shadow-md hover:scale-110 transition">
       <i class="bi bi-chevron-left text-xl"></i>
@@ -522,24 +530,32 @@
       <!-- Spacer Left -->
       <div class="shrink-0 w-[20%] sm:w-[15%] md:w-[10%] lg:w-[8%]"></div>
 
-{% for group in categorized_projects %}
-  {% for project in group.projects %}
-    <div class="slide shrink-0 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] snap-center relative transition-all duration-500 ease-in-out px-0.5" data-category="{{ group.name }}">
-      <div class="project-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300">
-        <a href="{% url 'project_detail' project.pk %}">
-          <img src="{{ project.image_1.url }}" alt="{{ project.name }}" class="w-full h-60 object-cover">
-        </a>
-        <div class="p-4 text-center">
-          <a href="{% url 'project_detail' project.pk %}">
-            <h3 class="font-semibold text-gray-800 text-lg">{{ project.name }}</h3>
-          </a>
-          <p class="text-sm text-gray-600">{{ group.name }}</p>
-        </div>
-      </div>
-    </div>
-  {% endfor %}
-{% endfor %}
+      {% for group in categorized_projects %}
+        {% for project in group.projects %}
+          <div class="slide shrink-0 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] snap-center relative transition-all duration-500 ease-in-out px-0.5" data-category="{{ group.name }}">
+            <div class="project-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300">
 
+              {% if project.image_1 %}
+                <img src="{{ project.image_1.url }}"
+                     alt="{{ project.name }}"
+                     class="w-full h-60 object-cover object-center"
+                     loading="lazy" />
+              {% else %}
+                <div class="w-full h-60 bg-gray-200 flex items-center justify-center text-gray-500 italic">
+                  No Image Available
+                </div>
+              {% endif %}
+
+              <div class="p-4 text-center">
+                <a href="{% url 'project_detail' project.pk %}">
+                  <h3 class="font-semibold text-gray-800 text-lg">{{ project.name }}</h3>
+                </a>
+                <p class="text-sm text-gray-600">{{ group.name }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
 
       <!-- Spacer Right -->
       <div class="shrink-0 w-[20%] sm:w-[15%] md:w-[10%] lg:w-[8%]"></div>
@@ -551,6 +567,7 @@
     </button>
   </div>
 </section>
+
 
 <!-- Script -->
 <script>
@@ -658,7 +675,6 @@
                                     <p>
                                         <i class="bi bi-quote quote-icon-left"></i>
                                         <span>Our newspaper site has never been better. The redesign has made it much easier for our readers to navigate and find the content they are looking for. Great job!</span>
-                                        <span>Our newspaper site has never been better. The redesign has made it much easier for our readers to navigate and find the content they are looking for. Great job!</span>
                                         <i class="bi bi-quote quote-icon-right"></i>
                                     </p>
                                     <h3>Oliver Smith</h3>
@@ -708,7 +724,7 @@
                                 <div class="testimonial-content">
                                     <p>
                                         <i class="bi bi-quote quote-icon-left"></i>
-                                        <span>We needed a new logo that would capture our brand's essence, and they delivered just that. The design process was smooth, and the final product was perfect.</span>
+                                        <span>We needed a new logo that would capture our brand's essence, and they delivered just that. The design process was smooth & final product was perfect.</span>
                                         <i class="bi bi-quote quote-icon-right"></i>
                                     </p>
                                     <h3>Amelia Brown</h3>
@@ -749,17 +765,18 @@
           <div class="address">
             <i class="bi bi-geo-alt"></i>
             <h4>Location:</h4>
-            <p>448/A, Khilgaon, Dhaka-1219</p>
+            <p>265/1, Khilgaon, Dhaka-1219</p>
           </div>
           <div class="email">
             <i class="bi bi-envelope"></i>
             <h4>Email:</h4>
-            <p>anik@teccmark.com</p>
+            <p>sajjad.anik24@gmail.com</p>
           </div>
           <div class="phone">
             <i class="bi bi-phone"></i>
             <h4>Call:</h4>
             <p>+88 01626 476168</p>
+              <p>+88 01404 724303</p>
           </div>
         </div>
       </div>
