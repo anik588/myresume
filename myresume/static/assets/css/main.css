@@ -379,8 +379,8 @@ h6 {
   position: fixed;
   visibility: hidden;
   opacity: 0;
-  right: 15px;
-  bottom: -15px;
+  right: 25px;
+  bottom: -25px;
   z-index: 99999;
   background-color: var(--accent-color);
   width: 44px;
@@ -390,7 +390,7 @@ h6 {
 }
 
 .scroll-top i {
-  font-size: 24px;
+  font-size: 28px;
   color: var(--contrast-color);
   line-height: 0;
 }

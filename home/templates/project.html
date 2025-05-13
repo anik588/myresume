@@ -4,9 +4,22 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Portfolio Details</title>
 
   {% load static %}
+
+
+  {% if project %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ project.name }} | Sajjad Ahmed Portfolio">
+  <meta property="og:description" content="{{ project.description|truncatewords:30 }}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  {% if project.image_1 %}
+    <meta property="og:image" content="{{ request.build_absolute_uri(project.image_1.url) }}">
+    <meta name="twitter:image" content="{{ request.build_absolute_uri(project.image_1.url) }}">
+  {% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+{% endif %}
+
   <!-- Favicons -->
   <link href="{% static 'img/portfolio-fav.png' %}" rel="icon">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
