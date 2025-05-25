@@ -194,7 +194,7 @@ from django.apps import apps
 @login_required
 def model_list(request, model_name):
     # Dynamically get the model from the model_name passed to the view
-    model = apps.get_model('home', model_name)  # Replace 'your_app_name' with your app's name
+    model = get_model_by_name(model_name)  # Replace 'your_app_name' with your app's name
 
     # Get all objects from the model
     objects = model.objects.all()
