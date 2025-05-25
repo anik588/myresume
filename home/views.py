@@ -98,7 +98,7 @@ def contact(request):
 # Project detail view
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
-
+    image_url = request.build_absolute_uri(project.image_1.url) if project.image_1 else None
     # Calculate the filled and empty stars
     filled_stars = range(project.rating)  # Creates a range of filled stars
     empty_stars = range(5 - project.rating)  # Creates a range of empty stars
@@ -107,6 +107,7 @@ def project_detail(request, pk):
         'project': project,
         'filled_stars': filled_stars,
         'empty_stars': empty_stars,
+        'project_image_absolute_url': image_url,
     })
 
 

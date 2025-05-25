@@ -13,10 +13,10 @@
   <meta property="og:title" content="{{ project.name }} | Sajjad Ahmed Portfolio">
   <meta property="og:description" content="{{ project.description|truncatewords:30 }}">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
-  {% if project.image_1 %}
-    <meta property="og:image" content="{{ request.build_absolute_uri(project.image_1.url) }}">
-    <meta name="twitter:image" content="{{ request.build_absolute_uri(project.image_1.url) }}">
-  {% endif %}
+    {% if project_image_absolute_url %}
+      <meta property="og:image" content="{{ project_image_absolute_url }}">
+      <meta name="twitter:image" content="{{ project_image_absolute_url }}">
+    {% endif %}
   <meta name="twitter:card" content="summary_large_image">
 {% endif %}
 
