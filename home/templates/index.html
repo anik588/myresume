@@ -11,7 +11,7 @@
   <meta name="author" content="Sajjad Ahmed Anik">
   <meta property="og:title" content="Sajjad Ahmed Portfolio">
   <meta property="og:description" content="Full stack development projects and research work in physics.">
-  <meta property="og:image" content=https://sajjad-anik.onrender.com/static/assets/preview.jpg">
+  <meta property="og:image" content="https://sajjad-anik.onrender.com/static/assets/preview.jpg">
   <meta property="og:url" content="https://sajjad-anik.onrender.com">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://sajjad-anik.onrender.com/">
@@ -54,9 +54,10 @@
   <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Main CSS File -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
   <link href="{% static 'css/style2.css' %}" rel="stylesheet">
+  <!-- Lottie Player -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> 
 <!-- AOS Library -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
@@ -198,78 +199,135 @@
 }
 
 .contact.section {
-  background-image: url('{% static 'img/bg-contact-me.png' %}');
+  background-image: url('{% static 'grow.jpg' %}');
   background-size: cover;
   background-position: center;
+  position: relative;
   padding: 80px 0;
   color: #ffffff;
 }
 
+.contact.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 0;
+}
+
+.contact.section .container {
+  position: relative;
+  z-index: 1;
+}
 
 .contact.section .section-title {
-  text-align: center; /* Center-align the section title */
-  margin-bottom: 30px; /* Space below the section title */
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .contact.section .section-title h2 {
-  color: #33383D; /* White text color for the title */
-  font-size: 36px; /* Larger font size for the title */
-  bac
+  color: #ffffff;
+  font-size: 36px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .contact.section .section-title p {
-  color: #33383D; /* White text color for the subtitle */
-  font-size: 18px; /* Font size for the subtitle */
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+}
+
+.contact.section .glass-info {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .contact.section .info {
-  color: #ffffff; /* White text color for the information */
-}
-
-.contact.section .info h2 {
-
+  color: #ffffff;
 }
 
 .contact.section .info h4 {
-  color: #33383D; /* Dark text color for the headings */
-  font-weight: bold; /* Ensure bold font weight */
-  font-size: 24px; /* Larger font size for the headings */
-  font-family: 'Arial', sans-serif; /* Example: Replace with your desired font family */
-  padding:10px;
-  margin-left:10px;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+  font-family: 'Arial', sans-serif;
+  padding: 5px 10px;
+  margin-left: 10px;
 }
 
 .contact.section .info i {
-  color: #B20000; /* Dark text color for the headings */
-  font-size:30px;
-  padding:10px;
-  margin-top:10px;
+  color: #00d0ff;
+  font-size: 30px;
+  padding: 10px;
+  margin-top: 10px;
+  filter: drop-shadow(0 0 8px rgba(0, 208, 255, 0.4));
 }
 
 .contact.section .info p {
-  color: #111; /* White text color for the paragraphs */
-  font-size: 16px; /* Font size for the paragraphs */
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  margin-left: 10px;
 }
 
-.contact.section .email-form {
-  background-color: #111; /* White background for the form */
-  padding: 30px; /* Padding inside the form */
-  border-radius: 10px; /* Rounded corners for the form */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for the form */
+.contact.section .glass-form {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.contact.section .email-form label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.contact.section .email-form .form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.contact.section .email-form .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.contact.section .email-form .form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(0, 208, 255, 0.6);
+  box-shadow: 0 0 12px rgba(0, 208, 255, 0.2);
+  outline: none;
 }
 
 .contact.section .email-form button {
-  background-color: #00d0ff; /* Light blue button background */
-  color: #ffffff; /* White text color for the button */
-  border: none; /* Remove button border */
-  padding: 12px 24px; /* Padding inside the button */
-  border-radius: 5px; /* Rounded corners for the button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease; /* Smooth background color transition */
+  background: linear-gradient(135deg, #00d0ff, #0090ff);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 208, 255, 0.3);
 }
 
 .contact.section .email-form button:hover {
-  background-color: #0056b3; /* Darker blue on button hover */
+  background: linear-gradient(135deg, #0090ff, #0060cc);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 208, 255, 0.4);
 }
 
 .form-group {
@@ -366,6 +424,8 @@
 
 <body class="index-page">
 
+<div id="site-content" style="visibility: hidden; opacity: 0; transition: opacity 0.6s ease;">
+
 <div class="cursor-container" style="display: block;">
   <div class="cursor-inner"></div>
   <div class="cursor-outer"></div>
@@ -378,10 +438,10 @@
     <nav id="navmenu" class="navmenu">
       <ul>
             <li><a href="/#hero" class="active"><i class="bi bi-house navicon"></i><span>Home</span></a></li>
-            <li><a href="/#resume"><i class="bi bi-person"></i><span>Resume</span></a></li>
-            <li><a href="/#github"><i class="bi bi-github"></i><span>Github</span></a></li>
-            <li><a href="/#skill"><i class="bi bi-code-slash navicon"></i><span>Skill</span></a></li>
             <li><a href="/#portfolio"><i class="bi bi-images navicon"></i><span>Portfolio</span></a></li>
+<li><a href="/#skills"><i class="bi bi-code-slash navicon"></i><span>Skill</span></a></li>
+            <li><a href="/#github"><i class="bi bi-github"></i><span>Github</span></a></li>
+            <li><a href="/#resume"><i class="bi bi-person"></i><span>Resume</span></a></li>
             <li><a href="/#testimonials"><i class="bi bi-chat-left-quote navicon"></i><span>Testimonial</span></a></li>
             <li><a href="/#contact"><i class="bi bi-envelope navicon"></i><span>Contact</span></a></li>
       </ul>
@@ -389,7 +449,9 @@
   </header>
 
   <main class="main">
-    <!-- Hero Section -->
+ 
+
+      <!-- Hero Section -->
     <section id="hero" class="hero section light-background">
       <img src="{% static 'img/portfolio-cover-2.jpg' %}" alt="">
       <div class="container" data-aos="zoom-out">
@@ -410,25 +472,26 @@
     <!-- /Hero Section END-->
 
 <!-- Divider with label -->
-<div class="professional-profiles" style="position: relative; text-align: center; margin: 20px 0;">
+<!-- <div class="professional-profiles" style="position: relative; text-align: center; margin: 20px 0;">
   <hr style="border: none; border-top: 2px solid #ccc;">
 <span class="professional-profiles-span">
   Watch out My Professional Profiles
 </span>
 
-</div>
+</div> -->
+
 
 <!-- Social Bar -->
-<div class="wide-social-bar">
+<!-- <div class="wide-social-bar">
   <a href="https://www.upwork.com/freelancers/~0150c7d807dd9acf09" class="icon-upwork" target="_blank" title="Upwork">
     <div class="circle-icon"><i class="fab fa-upwork"></i></div>
     <div class="icon-title">Upwork</div>
   </a>
 
   <a href="https://www.fiverr.com/sa_anik24" class="icon-fiverr" target="_blank" title="Fiverr">
-    <div class="circle-icon" >
+    <div class="circle-icon" > -->
       <!-- Replace with your SVG path for Fiverr -->
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" viewBox="0 0 50 50">
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75" height="75" viewBox="0 0 50 50">
         <path d="M41.86 21.321v-1.539h-2.919l-1.283-.022c-1.097 0-1.847.722-2.141 1.561v-1.539h-3.269v9.979h3.269v-2.14-3.312c0-.995.806-1.801 1.801-1.801h1.274v7.253h3.269v-2.14-3.312c0-.995.806-1.801 1.801-1.801h1.623v-2.726l-1.283-.022C42.905 19.759 42.156 20.482 41.86 21.321zM18.597 19.991L16.843 25.758 15.089 19.991 11.82 19.991 15.371 29.97 15.562 29.97 18.124 29.97 18.315 29.97 21.866 19.991zM5.239 19.991v-.665c0-.583.472-1.055 1.055-1.055h2.064v-2.737H5.523c-1.962 0-3.553 1.591-3.553 3.553v.905H.059v2.645h1.911v7.334H5.24v-7.334h3.118v7.334h3.269v-7.334-2.645H8.358 5.239zM26.398 19.857H26c-2.678 0-4.849 2.171-4.849 4.849v.548c0 2.678 2.171 4.849 4.849 4.849h.885c1.834 0 3.403-1.132 4.048-2.735l-2.884-.842c0 0-.345.988-1.548.988-1.358 0-2.077-.744-2.172-1.586h-.001v-.005c-.007-.061-.01-.123-.01-.185h3.688 3.242v-1.032C31.248 22.028 29.077 19.857 26.398 19.857zM24.322 23.814c.039-.897.777-1.613 1.684-1.613h.312c.907 0 1.645.716 1.684 1.613H24.322zM47.932 26.136c-1.123 0-2.033.91-2.033 2.033s.91 2.033 2.033 2.033c1.123 0 2.033-.91 2.033-2.033C49.964 27.046 49.055 26.136 47.932 26.136z"></path>
         </svg>
     </div>
@@ -444,23 +507,11 @@
     <div class="circle-icon"><i class="fab fa-github"></i></div>
     <div class="icon-title">GitHub</div>
   </a>
-</div>
+</div> -->
 
+{% include 'portfolio_skill.html' %}
 
-<!-- About Section Start -->
-<section id="resume" data-aos="fade-up" data-aos-duration="1000">
-          <div class="container section-title" >
-        <h2>About Me & Resume</h2>
-          </div><!-- End Section Title -->
-
-           {% include 'about.html' %}
-</section>
-      <!-- About and Resume Section END -->
-
-
-      <!-- About Section END -->
-
-      <!--      GitHub Section Start   -->
+    <!--      GitHub Section Start   -->
 
 <div class="github-section" id="github">
   <!-- Portfolio Header with GitHub Logo -->
@@ -484,154 +535,22 @@
 </div>
 <!--            Github Section END    -->
 
-      <!-- Skill Section Start -->
+<!-- About Section Start -->
+<section id="resume" data-aos="fade-up" data-aos-duration="1000">
+          <div class="container section-title" >
+        <h2>About Me & Resume</h2>
+          </div><!-- End Section Title -->
 
-<section id="skill" data-aos="fade-up" data-aos-duration="1000">
-      <div class="container section-title" >
-        <h2>My Skills</h2>
-<div style="color: #111; text-align: center; font-size: 1.5rem; font-family: sans-serif; margin: 12px 10px;">
-  <p>I work with React, Django, Three.js & more</p>
-  <h3>To Be Play, Drag to rotate • Pinch/scroll to zoom</h3>
-</div>
-
-      </div><!-- End Section Title -->
-
-
-     {% include 'skills.html' %}
+           {% include 'about.html' %}
 </section>
-<!-- Skills Section -->
+      <!-- About and Resume Section END -->
 
 
+      <!-- About Section END -->
 
 
-      <!-- 🚀 Drop-In Voyage Style Slider | Paste into index.html -->
-
-<section id="portfolio" class="py-8 mx-auto" style="width: 80%;">
-  <div class="container section-title mx-auto text-center mb-6">
-    <h2 class="text-3xl font-semibold">Portfolio</h2>
-    <p class="text-muted">Explore some featured projects.</p>
-  </div>
-
-  <!-- Category Buttons -->
-  <div class="flex flex-wrap justify-center gap-3 mb-6">
-    {% for group in categorized_projects %}
-      <button
-        class="category-btn px-3 py-1 text-sm sm:px-4 sm:py-2 sm:text-base bg-gray-800 text-white rounded transition"
-        data-category="{{ group.name }}">
-        {{ group.name }}
-      </button>
-    {% endfor %}
-  </div>
-
-  <!-- Slider Section -->
-  <div class="relative w-full max-w-5xl mx-auto overflow-hidden">
-
-    <!-- Left Arrow -->
-    <button class="arrow left absolute top-1/2 -translate-y-1/2 left-0 z-10 p-3 bg-blue-600 text-white rounded-full shadow-md hover:scale-110 transition">
-      <i class="bi bi-chevron-left text-xl"></i>
-    </button>
-
-    <!-- Slider Track -->
-    <div class="slider-track flex gap-x-4 px-4 transition-transform duration-500 ease-in-out scroll-smooth snap-x overflow-x-auto no-scrollbar">
-
-      <!-- Spacer Left -->
-      <div class="shrink-0 w-[20%] sm:w-[15%] md:w-[10%] lg:w-[8%]"></div>
-
-      {% for group in categorized_projects %}
-        {% for project in group.projects %}
-          <div class="slide shrink-0 w-[90%] sm:w-[60%] md:w-[50%] lg:w-[40%] snap-center relative transition-all duration-500 ease-in-out px-0.5" data-category="{{ group.name }}">
-            <div class="project-card bg-white rounded-lg shadow-md overflow-hidden transition duration-300">
-
-              {% if project.image_1 %}
-                <img src="{{ project.image_1.url }}"
-                     alt="{{ project.name }}"
-                     class="w-full h-60 object-cover object-center"
-                     loading="lazy" />
-              {% else %}
-                <div class="w-full h-60 bg-gray-200 flex items-center justify-center text-gray-500 italic">
-                  No Image Available
-                </div>
-              {% endif %}
-
-              <div class="p-4 text-center">
-                <a href="{% url 'project_detail' project.pk %}">
-                  <h3 class="font-semibold text-gray-800 text-lg">{{ project.name }}</h3>
-                </a>
-                <p class="text-sm text-gray-600">{{ group.name }}</p>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      {% endfor %}
-
-      <!-- Spacer Right -->
-      <div class="shrink-0 w-[20%] sm:w-[15%] md:w-[10%] lg:w-[8%]"></div>
-    </div>
-
-    <!-- Right Arrow -->
-    <button class="arrow right absolute top-1/2 -translate-y-1/2 right-0 z-10 p-3 bg-blue-600 text-white rounded-full shadow-md hover:scale-110 transition">
-      <i class="bi bi-chevron-right text-xl"></i>
-    </button>
-  </div>
-</section>
-
-
-<!-- Script -->
-<script>
-  const slides = document.querySelectorAll('.slide');
-  const track = document.querySelector('.slider-track');
-  const leftArrow = document.querySelector('.arrow.left');
-  const rightArrow = document.querySelector('.arrow.right');
-  const categoryBtns = document.querySelectorAll('.category-btn');
-
-  let currentIndex = 0;
-
-  function updateSlider() {
-    slides.forEach((slide, i) => {
-      slide.classList.remove('active', 'prev', 'next');
-      if (i === currentIndex) {
-        slide.classList.add('active');
-        const category = slide.dataset.category;
-        categoryBtns.forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.category === category);
-        });
-      } else if (i === currentIndex - 1) {
-        slide.classList.add('prev');
-      } else if (i === currentIndex + 1) {
-        slide.classList.add('next');
-      }
-    });
-
-    const slideWidth = slides[currentIndex].offsetWidth;
-    const offset = slides[currentIndex].offsetLeft - (track.offsetWidth - slideWidth) / 2;
-    track.scrollTo({ left: offset, behavior: 'smooth' });
-  }
-
-  function scrollToIndex(index) {
-    if (index >= 0 && index < slides.length) {
-      currentIndex = index;
-      updateSlider();
-    }
-  }
-
-  leftArrow.addEventListener('click', () => scrollToIndex(currentIndex - 1));
-  rightArrow.addEventListener('click', () => scrollToIndex(currentIndex + 1));
-
-  categoryBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const category = btn.dataset.category;
-      const matchIndex = [...slides].findIndex(slide => slide.dataset.category === category);
-      if (matchIndex !== -1) {
-        scrollToIndex(matchIndex);
-      }
-    });
-  });
-
-  // Auto init
-  updateSlider();
-  window.addEventListener('resize', () => updateSlider());
-</script>
-
+  
+    <!-- testimonials Section Start -->
 
 <hr color="blue" width="95%" size="2px">
 
@@ -758,17 +677,17 @@
 
 
 <!-- /Testimonials Section -->
-  <div class="section-title" data-aos="fade-up" data-aos-delay="100">
-    <h2>Contact Me</h2>
-    <p>Get in touch with us</p>
-  </div>
 <!-- /Contact Section -->
 <section id="contact" class="contact section">
 
   <div class="container" data-aos="fade-up"  data-aos-delay="100">
+    <div class="section-title" data-aos="fade-up" data-aos-delay="100">
+      <h2>Contact Me</h2>
+      <p>Get in touch with us</p>
+    </div>
     <div class="row">
-      <div class="col-lg-6" style="background-color: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px;">
-        <div class="info">
+      <div class="col-lg-6">
+        <div class="glass-info info">
           <div class="address">
             <i class="bi bi-geo-alt"></i>
             <h4>Location:</h4>
@@ -792,6 +711,7 @@
     <div id="alert-message" class="alert" role="alert" style="display: none;"></div>
 
             <!-- Contact Form -->
+            <div class="glass-form">
             <form action="{% url 'contact' %}" method="post" role="form" class="email-form" id="contact-form">
                 {% csrf_token %}
                 <div class="form-group">
@@ -808,6 +728,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
+            </div>
         </div>
 
     </div>
@@ -849,8 +770,19 @@
 <!-- Scroll Top -->
 <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+</div><!-- /site-content -->
+
 <!-- Preloader -->
-<div id="preloader"></div>
+<div id="preloader">
+  <lottie-player
+    src="{% static 'loading.json' %}"
+    background="transparent"
+    speed="0.4"
+    style="width: 300px; height: 200px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+    loop
+    autoplay>
+  </lottie-player>
+</div>
 
 <!-- Your main content here -->
 
