@@ -67,141 +67,218 @@
   <div id="3d-container"></div>
 </div>
 <script>
-  const container = document.getElementById('3d-container');
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+const container = document.getElementById('3d-container');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
 
-  // OrbitControls
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+container.appendChild(renderer.domElement);
 
-  controls.minPolarAngle = Math.PI / 4;  // Lower limit (e.g., 45°)
-  controls.maxPolarAngle = Math.PI / 1.7;  // Upper limit (e.g., ~106°)
+// Controls (wider view)
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+camera.position.set(0, 6, 25);
+controls.update();
 
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.rotateSpeed = 0.4;
-  controls.zoomSpeed = 0.6;
-  controls.enableZoom = true;
-  controls.enableRotate = true;
-  controls.enablePan = true; // Allow panning
-  controls.enableTouchRotate = true; // Enable touch rotate
-  controls.enableTouchZoom = true;   // Enable touch zoom (pinch zoom)
-  controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY }; // Pinch zoom
+// Lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(ambientLight);
 
-  controls.minDistance = 3;  // how close the camera can get
-  controls.maxDistance = 10; // how far the camera can go
+const sunLight = new THREE.PointLight(0xffd37a, 2.2, 400);
+sunLight.position.set(0, 0, 0);
+scene.add(sunLight);
 
-  // Responsive camera positioning
-  if (window.innerWidth < 768) {
-    camera.position.z = 8;
-  } else {
-    camera.position.z = 10;
+// ⭐ Floating stars
+const stars = [];
+const starGeo = new THREE.SphereGeometry(0.12, 8, 8);
+const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+for (let i = 0; i < 2500; i++) {
+  const star = new THREE.Mesh(starGeo, starMat);
+
+  star.position.set(
+    Math.random() * 800 - 400,
+    Math.random() * 800 - 400,
+    Math.random() * 800 - 400
+  );
+
+  star.userData.speed = Math.random() * 0.04 + 0.01;
+  stars.push(star);
+  scene.add(star);
+}
+
+// 🌠 Comets
+let comets = [];
+
+function spawnComet() {
+  const cometGeo = new THREE.SphereGeometry(0.2, 12, 12);
+  const cometMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const comet = new THREE.Mesh(cometGeo, cometMat);
+
+  comet.position.set(
+    Math.random() * 80 - 40,
+    Math.random() * 20 + 4,
+    Math.random() * 80 - 40
+  );
+
+  comet.userData.velocity = new THREE.Vector3(
+    Math.random() * 0.35 - 0.17,
+    -0.09,
+    Math.random() * 0.35 - 0.17
+  );
+
+  const tailGeo = new THREE.BufferGeometry();
+  const tailMat = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.7, transparent: true });
+  const tail = new THREE.Line(tailGeo, tailMat);
+  comet.userData.tail = tail;
+
+  scene.add(comet);
+  scene.add(tail);
+  comets.push(comet);
+}
+
+setInterval(spawnComet, Math.random() * 3000 + 5000);
+
+// 🌞 Sun (bigger & flaming)
+let sun;
+
+const sunGeo = new THREE.SphereGeometry(4.2, 64, 64);
+const sunMat = new THREE.MeshStandardMaterial({
+  color: 0xffa500,
+  emissive: 0xff4500,
+  emissiveIntensity: 2.2,
+});
+
+sun = new THREE.Mesh(sunGeo, sunMat);
+scene.add(sun);
+
+// Try loading texture (optional)
+const textureLoader = new THREE.TextureLoader();
+textureLoader.load(
+  '/static/models/sun.jpg',
+  function (texture) {
+    sun.material.map = texture;
+    sun.material.needsUpdate = true;
+  },
+  undefined,
+  function () {
+    console.warn('sun texture not found, using default material');
   }
+);
 
-  // Lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
-  scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-  directionalLight.position.set(5, 5, 5);
-  scene.add(directionalLight);
+// Skill models (bigger & noticeable)
+const skills = [
+  { name: 'react', src: '{% static "img/skills/react.png" %}', radius: 6, speed: 0.0025 },
+  { name: 'nextjs', src: '{% static "img/skills/next-js.png" %}', radius: 8, speed: 0.0018 },
+  { name: 'threejs', src: '{% static "img/skills/three-js.png" %}', radius: 10, speed: 0.0013 },
+  { name: 'django', src: '{% static "img/skills/django.png" %}', radius: 12, speed: 0.001 },
+  { name: 'postgresql', src: '{% static "img/skills/postgres-sql.png" %}', radius: 14, speed: 0.0008 },
+  { name: 'nodejs', src: '{% static "img/skills/node-js.png" %}', radius: 16, speed: 0.0007 } // new added
+];
 
-  // Stars (for visual effect)
-  const starGeo = new THREE.SphereGeometry(0.1, 8, 8);
-  const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-  const stars = [];
-  for (let i = 0; i < 5000; i++) {
-    const star = new THREE.Mesh(starGeo, starMat);
-    star.position.set(Math.random() * 600 - 300, Math.random() * 600 - 300, Math.random() * 600 - 300);
-    stars.push(star);
-    scene.add(star);
-  }
+const sprites = [];
 
-  // Load Sun Model (or Moon)
-  let moonModel;
-  const loader = new THREE.GLTFLoader();
-  loader.load("{% static 'models/scene.gltf' %}", function (gltf) {
-    moonModel = gltf.scene;
-    moonModel.scale.set(0.35, 0.35, 0.35);
-    scene.add(moonModel);
+// Orbits (visible but thin)
+skills.forEach(skill => {
+  const curve = new THREE.EllipseCurve(
+    0, 0,
+    skill.radius, skill.radius,
+    0, 2 * Math.PI,
+    false,
+    0
+  );
+
+  const points = curve.getPoints(120);
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  const material = new THREE.LineBasicMaterial({
+    color: 0x666666,
+    opacity: 0.4,
+    transparent: true
   });
 
-  // Orbiting skill sprites (for skill icons around the model)
-  const textureLoader = new THREE.TextureLoader();
-  const skills = [
-    { name: 'react', src: '{% static "img/skills/react.png" %}', radius: 3.5, speed: 0.0025 },
-    { name: 'nextjs', src: '{% static "img/skills/next-js.png" %}', radius: 4.5, speed: 0.0018 },
-    { name: 'threejs', src: '{% static "img/skills/three-js.png" %}', radius: 5.5, speed: 0.0013 },
-    { name: 'django', src: '{% static "img/skills/django.png" %}', radius: 6.8, speed: 0.001 },
-    { name: 'postgresql', src: '{% static "img/skills/postgres-sql.png" %}', radius: 8, speed: 0.0008 }
-  ];
+  const orbit = new THREE.Line(geometry, material);
+  orbit.rotation.x = Math.PI / 2;
+  scene.add(orbit);
 
-  const orbitSprites = [];
-  skills.forEach(skill => {
-    textureLoader.load(skill.src, (texture) => {
-      const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
-      const sprite = new THREE.Sprite(material);
-      sprite.scale.set(0.8, 0.8, 0.8);
-      sprite.userData = {
-        angle: Math.random() * Math.PI * 2,
-        radius: window.innerWidth < 768 ? skill.radius * 0.75 : skill.radius,
-        speed: skill.speed,
-        heightOffset: Math.sin(skill.radius) * 0.3 * (Math.random() > 0.5 ? 1 : -1)
-      };
-      sprite.name = skill.name;
-      scene.add(sprite);
-      orbitSprites.push(sprite);
-    });
+  // bigger icons
+  textureLoader.load(skill.src, (texture) => {
+    const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
+    const sprite = new THREE.Sprite(spriteMat);
+
+    sprite.scale.set(1.6, 1.6, 1.6); // bigger than before
+
+    sprite.userData = {
+      angle: Math.random() * Math.PI * 2,
+      radius: skill.radius,
+      speed: skill.speed
+    };
+
+    scene.add(sprite);
+    sprites.push(sprite);
+  });
+});
+
+// Animate
+function animate() {
+  requestAnimationFrame(animate);
+
+  // Sun flame & light
+  if (sun) {
+    sun.rotation.y += 0.0015;
+    sunLight.position.copy(sun.position);
+  }
+
+  // floating stars
+  stars.forEach(star => {
+    star.position.y += Math.sin(Date.now() * 0.001 + star.position.x) * 0.02;
   });
 
-  // Rotation limit tracking
-  let modelRotationY = 0;
-  const modelRotationLimit = Math.PI / 2;  // Adjust this to your model's top rotation limit
+  // comets
+  comets.forEach((comet, index) => {
+    comet.position.add(comet.userData.velocity);
 
-  // Animate function
-  function animate() {
-    requestAnimationFrame(animate);
+    const tail = comet.userData.tail;
+    tail.geometry.setFromPoints([
+      comet.position.clone(),
+      comet.position.clone().add(comet.userData.velocity.clone().multiplyScalar(-8))
+    ]);
 
-    // Stop model rotation once it reaches the limit
-    if (moonModel && modelRotationY < modelRotationLimit) {
-      moonModel.rotation.y += 0.002;  // Rotate the model
-      modelRotationY = moonModel.rotation.y; // Keep track of the model's rotation
+    if (comet.position.y < -40) {
+      scene.remove(comet);
+      scene.remove(tail);
+      comets.splice(index, 1);
     }
-
-    scene.rotation.y += 0.0005; // Slowly rotate everything including stars
-
-    controls.update(); // Update controls (panning, zooming, etc.)
-    const t = Date.now() * 0.001;
-    orbitSprites.forEach(sprite => {
-      const a = sprite.userData.angle + t * sprite.userData.speed * 100;
-      const r = sprite.userData.radius;
-      const y = sprite.userData.heightOffset;
-      sprite.position.set(Math.cos(a) * r, y, Math.sin(a) * r);
-      sprite.lookAt(camera.position);
-      const z = sprite.position.z;
-      const scale = THREE.MathUtils.clamp(THREE.MathUtils.mapLinear(z, -10, 10, 0.6, 1.3), 0.4, 1.5);
-      sprite.scale.set(scale, scale, scale);
-      sprite.renderOrder = z > 0 ? 2 : 0;
-    });
-
-    renderer.render(scene, camera); // Render the scene
-  }
-
-  animate();
-
-  // Handle window resize
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // Prevent default behavior for touch scrolls (for mobile)
-  container.addEventListener('touchmove', function (event) {
-    event.preventDefault(); // Disable default scrolling on touch events
+  scene.rotation.y += 0.00025;
+  controls.update();
+
+  const t = Date.now() * 0.001;
+
+  sprites.forEach(sprite => {
+    const a = sprite.userData.angle + t * sprite.userData.speed * 100;
+    const r = sprite.userData.radius;
+
+    sprite.position.set(
+      Math.cos(a) * r,
+      Math.sin(a * 0.7) * 0.5,
+      Math.sin(a) * r
+    );
+
+    sprite.lookAt(camera.position);
   });
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 </script>
 

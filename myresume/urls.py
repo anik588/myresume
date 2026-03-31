@@ -17,13 +17,12 @@ urlpatterns = [
     path('admin/<str:model_name>/<int:pk>/edit/', views.model_add_edit, name='model_edit'),
     path('admin/<str:model_name>/<int:pk>/delete/', views.model_delete, name='model_delete'),
 
-
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
     path('portfolio-ecommerce/', views.portfolio_ecommerce, name='portfolio_ecommerce'),
     path('portfolio-newspaper-site/', views.portfolio_newspaper_site, name='portfolio_newspaper_site'),
     path('project/<int:pk>/', views.project_detail, name='project_detail'),
-
+    path('portfolio-skill/', views.portfolio_skill, name='portfolio_skill'),
 ]
 
 # Static/media settings (OK)

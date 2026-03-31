@@ -1,0 +1,885 @@
+{% load static %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Syne:wght@400;600;700;800&family=Inter:wght@400;500&display=swap');
+
+/* ─── ROOT ─── */
+:root {
+  --bg0: #020509;
+  --bg1: #06101a;
+  --bg2: #0a1929;
+  --accent: #38bdf8;
+  --accent2: #818cf8;
+  --accent3: #34d399;
+  --gold: #fbbf24;
+  --text: #e2eaf4;
+  --muted: #64879e;
+  --card-bg: rgba(6,16,26,0.9);
+  --card-border: rgba(56,189,248,0.12);
+  --radius: 18px;
+}
+
+/* ─── WRAP ─── */
+.univ-wrap {
+  position: relative;
+  background: var(--bg0);
+  min-height: 100vh;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  overflow: hidden;
+  isolation: isolate;
+  font-family: 'Syne', sans-serif;
+}
+
+/* ─── CANVAS ─── */
+#u-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 1;
+}
+
+/* ─── NOISE OVERLAY ─── */
+.univ-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+
+/* ─── SECTION HEADER ─── */
+.sec-head {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 24px 24px 48px;
+}
+.sec-head .eyebrow {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  opacity: 1;
+  display: block;
+}
+.sec-head h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  color: var(--text);
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+.sec-head h2 span {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sec-head .underline-bar {
+  width: 52px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 99px;
+  margin: 16px auto 0;
+}
+
+/* ─── SKILLS ─── */
+.skills-sec {
+  position: relative;
+  z-index: 3;
+  padding: 0 24px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 860px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .skills-grid { grid-template-columns: 1fr; } }
+
+.sk-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: transform 0.65s cubic-bezier(.22,1,.36,1), border-color 0.35s, box-shadow 0.35s, opacity 0.65s cubic-bezier(.22,1,.36,1);
+  cursor: default;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+/* odd cards slide from left, even from right */
+.sk-card:nth-child(odd)  { transform: translateX(-70px); }
+.sk-card:nth-child(even) { transform: translateX(70px); }
+.sk-card.in { opacity: 1; transform: translateX(0) !important; }
+/* snap back instantly when leaving so re-entry always looks fresh */
+.sk-card.resetting { transition: none !important; }
+.sk-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--c, var(--accent));
+  box-shadow: 0 16px 50px -8px var(--cs, rgba(56,189,248,0.3));
+}
+
+.sk-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.sk-ico {
+  width: 50px; height: 50px; border-radius: 14px;
+  background: var(--cbg, rgba(56,189,248,0.1));
+  border: 1px solid var(--cbord, rgba(56,189,248,0.2));
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+.sk-card:hover .sk-ico { transform: scale(1.12) rotate(5deg); }
+.sk-ico img { width: 26px; height: 26px; object-fit: contain; }
+.sk-title-group .sk-name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700; font-size: 1.05rem; color: var(--c, var(--accent));
+  line-height: 1.2;
+}
+.sk-title-group .sk-role {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px; font-weight: 500;
+  color: rgba(200,218,240,0.55);
+  letter-spacing: 0.3px; margin-top: 3px;
+  text-transform: uppercase;
+}
+.sk-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.sk-tag {
+  font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 500;
+  padding: 4px 11px; border-radius: 99px;
+  border: 1px solid var(--cbord, rgba(56,189,248,0.2));
+  color: var(--c, var(--accent));
+  background: var(--cbg, rgba(56,189,248,0.06));
+  letter-spacing: 0.2px;
+}
+.sk-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 400;
+  color: rgba(200,218,240,0.75);
+  line-height: 1.65; margin: 10px 0 0;
+}
+
+/* card themes */
+.sk-next  { --c:#38bdf8; --cbg:rgba(56,189,248,.08); --cbord:rgba(56,189,248,.2); --cs:rgba(56,189,248,.25); }
+.sk-django{ --c:#34d399; --cbg:rgba(52,211,153,.08); --cbord:rgba(52,211,153,.2); --cs:rgba(52,211,153,.25); }
+.sk-oracle{ --c:#fb7185; --cbg:rgba(251,113,133,.08); --cbord:rgba(251,113,133,.2); --cs:rgba(251,113,133,.25); }
+.sk-tw    { --c:#818cf8; --cbg:rgba(129,140,248,.08); --cbord:rgba(129,140,248,.2); --cs:rgba(129,140,248,.25); }
+.sk-rn    { --c:#a78bfa; --cbg:rgba(167,139,250,.08); --cbord:rgba(167,139,250,.2); --cs:rgba(167,139,250,.25); }
+.sk-pg    { --c:#60a5fa; --cbg:rgba(96,165,250,.08); --cbord:rgba(96,165,250,.2); --cs:rgba(96,165,250,.25); }
+
+/* ─── PORTFOLIO ─── */
+.portfolio-sec {
+  position: relative;
+  z-index: 3;
+  padding: 0 24px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Category tabs */
+.cat-tabs {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 36px;
+}
+.cat-btn {
+  font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  padding: 9px 22px; border-radius: 99px;
+  background: rgba(6,16,26,0.8); border: 1px solid rgba(56,189,248,0.15);
+  color: var(--muted); cursor: pointer; transition: all 0.28s ease;
+  backdrop-filter: blur(12px);
+}
+.cat-btn:hover { color: var(--accent); border-color: rgba(56,189,248,0.4); background: rgba(56,189,248,0.06); }
+.cat-btn.active {
+  color: #020509; background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 4px 24px rgba(56,189,248,0.35);
+  font-weight: 600;
+}
+
+/* Slider wrapper */
+.slider-wrap {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(6,16,26,0.6);
+  border: 1px solid rgba(56,189,248,0.08);
+  backdrop-filter: blur(20px);
+  padding: 6px;
+}
+
+/* Arrow buttons */
+.sl-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 10;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(6,16,26,0.95);
+  border: 1px solid rgba(56,189,248,0.3);
+  color: var(--accent); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.sl-arrow:hover {
+  background: var(--accent); color: #020509;
+  box-shadow: 0 8px 30px rgba(56,189,248,0.4);
+  transform: translateY(-50%) scale(1.08);
+}
+.sl-arrow.left { left: 12px; }
+.sl-arrow.right { right: 12px; }
+
+/* Track */
+.slider-track {
+  display: flex; gap: 16px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 20px 60px;
+  scrollbar-width: none; -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+.slider-track::-webkit-scrollbar { display: none; }
+
+/* Slides */
+.pf-slide {
+  flex: 0 0 300px; scroll-snap-align: start;
+  transition: opacity 0.3s, transform 0.3s;
+}
+@media (max-width: 900px)  { .pf-slide { flex: 0 0 260px; } }
+@media (max-width: 600px)  { .pf-slide { flex: 0 0 82vw; } .slider-track { padding: 16px 28px; } }
+
+/* Project card */
+.pf-card {
+  display: block; height: 100%;
+  background: var(--card-bg);
+  border: 1px solid rgba(56,189,248,0.1);
+  border-radius: 16px; overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.35s cubic-bezier(.2,1,.3,1), border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.pf-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(2,5,9,0.95) 100%);
+  pointer-events: none;
+}
+.pf-card:hover {
+  transform: translateY(-8px) scale(1.015);
+  border-color: rgba(56,189,248,0.4);
+  box-shadow: 0 24px 60px -8px rgba(56,189,248,0.25), 0 4px 16px rgba(0,0,0,0.5);
+}
+
+.pf-thumb { width: 100%; height: 190px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.pf-card:hover .pf-thumb { transform: scale(1.06); }
+
+.pf-placeholder {
+  width: 100%; height: 190px;
+  background: linear-gradient(135deg, #060f1b 0%, #0d2035 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--accent); gap: 8px; font-size: 2.2rem; opacity: 0.5;
+}
+
+.pf-body { padding: 18px 18px 20px; position: relative; z-index: 2; }
+.pf-cat {
+  font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px; opacity: 0.9;
+}
+.pf-name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700; font-size: 1.05rem; color: var(--text);
+  line-height: 1.3; letter-spacing: -0.2px;
+}
+.pf-arrow {
+  position: absolute; bottom: 18px; right: 18px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.25);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 12px;
+  transform: rotate(-45deg); transition: all 0.3s;
+  z-index: 2;
+}
+.pf-card:hover .pf-arrow {
+  background: var(--accent); color: #020509;
+  transform: rotate(0deg);
+}
+
+/* Dots indicator */
+.sl-dots { display: flex; justify-content: center; gap: 6px; margin-top: 20px; }
+.sl-dot {
+  width: 6px; height: 6px; border-radius: 99px;
+  background: rgba(56,189,248,0.2); transition: all 0.3s ease; cursor: pointer;
+}
+.sl-dot.active { width: 22px; background: var(--accent); }
+
+/* ─── FOOTER ─── */
+.univ-footer {
+  position: relative; z-index: 3; text-align: center; padding-bottom: 60px;
+}
+.u-dots span {
+  display: inline-block; width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(56,189,248,0.4); margin: 0 4px;
+  animation: blink 2.2s ease-in-out infinite;
+}
+.u-dots span:nth-child(2) { animation-delay: 0.35s; }
+.u-dots span:nth-child(3) { animation-delay: 0.7s; }
+@keyframes blink { 0%,100%{opacity:.15} 50%{opacity:1} }
+.u-ftxt {
+  font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 3px;
+  color: rgba(56,189,248,0.25); margin-top: 8px; text-transform: uppercase;
+}
+
+/* ─── GRADIENT VIGNETTE ─── */
+.univ-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, transparent 0%, var(--bg0) 100%);
+  opacity: 0.3;
+}
+</style>
+
+<div class="univ-wrap">
+  <canvas id="u-canvas"></canvas>
+
+  <!-- ── SKILLS ── -->
+  <section id="skills">
+    <div class="sec-head">
+      <p class="eyebrow">What I Work With</p>
+      <h2>My <span>Skills</span></h2>
+      <div class="underline-bar"></div>
+    </div>
+    <div class="skills-sec">
+      <div class="skills-grid">
+
+        <!-- Next.js -->
+        <div class="sk-card sk-next">
+          <div class="sk-top">
+            <div class="sk-ico">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" width="26" height="26" alt="Next.js" style="filter:invert(1) brightness(2) sepia(1) saturate(3) hue-rotate(170deg);">
+            </div>
+            <div class="sk-title-group">
+              <div class="sk-name">Next.js</div>
+              <div class="sk-role">React Framework</div>
+            </div>
+          </div>
+          <div class="sk-desc">Full-stack React with App Router, RSC, server actions, and edge rendering.</div>
+          <div class="sk-tags">
+            <span class="sk-tag">App Router</span>
+            <span class="sk-tag">RSC</span>
+            <span class="sk-tag">REST API</span>
+            <span class="sk-tag">SSR</span>
+          </div>
+        </div>
+
+        <!-- Django -->
+        <div class="sk-card sk-django">
+          <div class="sk-top">
+            <div class="sk-ico">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg" width="26" height="26" alt="Django" style="filter:invert(1) brightness(1.5) sepia(1) saturate(3) hue-rotate(100deg);">
+            </div>
+            <div class="sk-title-group">
+              <div class="sk-name">Django</div>
+              <div class="sk-role">Python Backend</div>
+            </div>
+          </div>
+          <div class="sk-desc">Robust backend APIs, ORM, auth, admin, and DRF for scalable services.</div>
+          <div class="sk-tags">
+            <span class="sk-tag">DRF</span>
+            <span class="sk-tag">ORM</span>
+            <span class="sk-tag">Auth</span>
+            <span class="sk-tag">Admin</span>
+          </div>
+        </div>
+
+        <!-- Oracle DB -->
+        <div class="sk-card sk-oracle">
+          <div class="sk-top">
+            <div class="sk-ico">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oracle/oracle-original.svg" width="30" height="30" alt="Oracle">
+            </div>
+            <div class="sk-title-group">
+              <div class="sk-name">Oracle DB</div>
+              <div class="sk-role">Database</div>
+            </div>
+          </div>
+          <div class="sk-desc">Enterprise relational DB with complex queries, procedures, and tuning.</div>
+          <div class="sk-tags">
+            <span class="sk-tag">PL/SQL</span>
+            <span class="sk-tag">Tuning</span>
+            <span class="sk-tag">Partitions</span>
+            <span class="sk-tag">RAC</span>
+          </div>
+        </div>
+
+        <!-- Tailwind -->
+        <div class="sk-card sk-tw">
+          <div class="sk-top">
+            <div class="sk-ico">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" width="26" height="26" alt="Tailwind CSS">
+            </div>
+            <div class="sk-title-group">
+              <div class="sk-name">Tailwind CSS</div>
+              <div class="sk-role">Styling</div>
+            </div>
+          </div>
+          <div class="sk-desc">Utility-first CSS for rapid, consistent, and responsive UI development.</div>
+          <div class="sk-tags">
+            <span class="sk-tag">Responsive</span>
+            <span class="sk-tag">Dark Mode</span>
+            <span class="sk-tag">Custom Config</span>
+          </div>
+        </div>
+
+        <!-- React Native -->
+        <div class="sk-card sk-rn">
+          <div class="sk-top">
+            <div class="sk-ico">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" width="26" height="26" alt="React Native">
+            </div>
+            <div class="sk-title-group">
+              <div class="sk-name">React Native</div>
+              <div class="sk-role">Mobile</div>
+            </div>
+          </div>
+          <div class="sk-desc">Cross-platform mobile apps for iOS & Android from a single codebase.</div>
+          <div class="sk-tags">
+            <span class="sk-tag">Expo</span>
+            <span class="sk-tag">iOS</span>
+            <span class="sk-tag">Android</span>
+            <span class="sk-tag">Navigation</span>
+          </div>
+        </div>
+
+        <!-- PostgreSQL -->
+        <div class="sk-card sk-pg">
+          <div class="sk-top">
+            <div class="sk-ico">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" width="26" height="26" alt="PostgreSQL">
+            </div>
+            <div class="sk-title-group">
+              <div class="sk-name">PostgreSQL</div>
+              <div class="sk-role">Database</div>
+            </div>
+          </div>
+          <div class="sk-desc">Open-source relational DB with advanced indexing, full-text search, JSONB.</div>
+          <div class="sk-tags">
+            <span class="sk-tag">JSONB</span>
+            <span class="sk-tag">Indexing</span>
+            <span class="sk-tag">Full-text</span>
+            <span class="sk-tag">Supabase</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PORTFOLIO ── -->
+  <section class="portfolio-sec" id="portfolio">
+    <div class="sec-head" style="padding-top:0">
+      <p class="eyebrow">Selected Works</p>
+      <h2>My <span>Portfolio</span></h2>
+      <div class="underline-bar"></div>
+    </div>
+
+    <!-- Category tabs -->
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-btn active" data-cat="all">All</button>
+      {% for cat in categorized_projects %}
+        <button class="cat-btn" data-cat="{{ cat.name|lower|slugify }}">{{ cat.name }}</button>
+      {% endfor %}
+    </div>
+
+    <!-- Slider -->
+    <div class="slider-wrap">
+      <button class="sl-arrow left" id="slPrev" aria-label="Previous">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+
+      <div class="slider-track" id="slTrack">
+        {% for cat in categorized_projects %}
+          {% for project in cat.projects %}
+            <div class="pf-slide" data-cat="{{ cat.name|lower|slugify }}">
+              <a class="pf-card" href="{{ project.project_link|default:'#' }}" target="_blank">
+                {% if project.image_1 %}
+                  <img class="pf-thumb" src="{{ project.image_1.url }}" alt="{{ project.name }}">
+                {% else %}
+                  <div class="pf-placeholder">
+                    <i class="bi bi-image"></i>
+                    <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;">NO IMAGE</span>
+                  </div>
+                {% endif %}
+                <div class="pf-body">
+                  <div class="pf-cat">{{ cat.name }}</div>
+                  <div class="pf-name">{{ project.name }}</div>
+                  <div class="pf-arrow"><i class="bi bi-arrow-up-right"></i></div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+
+      <button class="sl-arrow right" id="slNext" aria-label="Next">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+
+    <div class="sl-dots" id="slDots"></div>
+  </section>
+
+  <!-- Footer -->
+  <div class="univ-footer">
+    <div class="u-dots"><span></span><span></span><span></span></div>
+    <p class="u-ftxt">Full-Stack · Web · Mobile · Database</p>
+  </div>
+
+
+ 
+
+</div>
+
+<!-- ── JAVASCRIPT ── -->
+<script>
+(function () {
+  /* ── CANVAS: deep মহাকাশ space ── */
+  const cv  = document.getElementById('u-canvas');
+  const ctx = cv.getContext('2d');
+  let W, H, stars = [], nebulas = [], comets = [];
+  const STAR_COUNT = 700;
+
+  function mkStar() {
+    // Galaxy horizon band — most stars clustered in a horizontal band across the middle
+    const inBand = Math.random() < 0.65;
+    let x, y;
+    if (inBand) {
+      x = Math.random() * W;
+      // tight horizontal band centered at ~55% height, gaussian-like spread
+      const bandCenter = H * 0.55;
+      const bandSpread = H * 0.18;
+      y = bandCenter + (Math.random() + Math.random() - 1) * bandSpread;
+    } else {
+      x = Math.random() * W;
+      y = Math.random() * H;
+    }
+    const rng = Math.random();
+    // denser in band = brighter stars
+    const inBandBonus = inBand ? 0.15 : 0;
+    return {
+      x, y,
+      r: rng < 0.03 + inBandBonus ? 2.0 + Math.random() * 0.9   // bright giants
+       : rng < 0.14 + inBandBonus ? 1.0 + Math.random() * 0.5   // medium
+       : 0.35 + Math.random() * 0.45,                            // dim field
+      base: inBand ? 0.45 + Math.random() * 0.55 : 0.2 + Math.random() * 0.55,
+      tw: Math.random() * Math.PI * 2,
+      ts: 0.2 + Math.random() * 1.1,
+      color: rng < 0.07  ? [255, 220, 170]   // warm orange giant
+           : rng < 0.18  ? [180, 205, 255]   // blue-white
+           : rng < 0.24  ? [210, 175, 255]   // purple
+           : [215, 232, 255],                // cold white
+    };
+  }
+
+  function mkNebula() {
+    // place nebulas along the galaxy horizon band too
+    return {
+      x: Math.random() * W,
+      y: H * 0.35 + Math.random() * H * 0.35,
+      rx: 150 + Math.random() * 250,
+      ry: 50 + Math.random() * 90,
+      angle: Math.random() * Math.PI,
+      hue: Math.random() < 0.33 ? [30, 80, 200]
+         : Math.random() < 0.5  ? [110, 50, 210]
+         : [20, 160, 130],
+      alpha: 0.022 + Math.random() * 0.032,
+    };
+  }
+
+  // Comets spawn from ALL edges and angles — top, sides, even from within
+  function mkComet(burst = false) {
+    const edge = Math.floor(Math.random() * 4); // 0=top 1=right 2=left 3=anywhere
+    let x, y, vx, vy;
+    const speed = burst ? 8 + Math.random() * 8 : 5 + Math.random() * 8;
+    const angle = (20 + Math.random() * 50) * Math.PI / 180;
+
+    if (edge === 0) {
+      // from top, going down-diagonal
+      x = Math.random() * W;
+      y = -10;
+      vx = (Math.random() - 0.5) * speed * 0.7;
+      vy = Math.cos(angle) * speed;
+    } else if (edge === 1) {
+      // from right, going left-diagonal
+      x = W + 10;
+      y = Math.random() * H * 0.7;
+      vx = -Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed * 0.6;
+    } else if (edge === 2) {
+      // from left, going right-diagonal
+      x = -10;
+      y = Math.random() * H * 0.7;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed * 0.6;
+    } else {
+      // from anywhere in upper half — scattered interior comets
+      x = Math.random() * W;
+      y = Math.random() * H * 0.4;
+      const a2 = (Math.random() * 60 + 10) * Math.PI / 180;
+      vx = (Math.random() < 0.5 ? 1 : -1) * Math.sin(a2) * speed * 0.5;
+      vy = Math.cos(a2) * speed;
+    }
+
+    return {
+      x, y, vx, vy,
+      len: burst ? 110 + Math.random() * 180 : 80 + Math.random() * 160,
+      life: 0,
+      maxLife: burst ? 80 + Math.random() * 60 : 70 + Math.random() * 80,
+      bright: burst,
+    };
+  }
+
+  function resize() {
+    const wrap = document.querySelector('.univ-wrap');
+    W = cv.width  = wrap.offsetWidth;
+    H = cv.height = wrap.offsetHeight;
+    stars   = Array.from({ length: STAR_COUNT }, mkStar);
+    nebulas = Array.from({ length: 7 }, mkNebula);
+  }
+
+  // ── BURST: only 4 beautiful comets on load, staggered nicely ──
+  function launchBurst() {
+    for (let i = 0; i < 4; i++) {
+      setTimeout(() => comets.push(mkComet(true)), i * 400);
+    }
+  }
+
+  let t = 0, lastComet = 0;
+
+  function frame() {
+    requestAnimationFrame(frame);
+    ctx.clearRect(0, 0, W, H);
+    t += 0.016;
+
+    // Nebula clouds
+    nebulas.forEach(n => {
+      ctx.save();
+      ctx.translate(n.x, n.y);
+      ctx.rotate(n.angle);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, n.rx);
+      g.addColorStop(0,   `rgba(${n.hue.join(',')},${n.alpha})`);
+      g.addColorStop(0.5, `rgba(${n.hue.join(',')},${n.alpha * 0.4})`);
+      g.addColorStop(1,   `rgba(${n.hue.join(',')},0)`);
+      ctx.scale(1, n.ry / n.rx);
+      ctx.beginPath();
+      ctx.arc(0, 0, n.rx, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Galaxy horizon glow — soft horizontal luminosity band
+    const bandY = H * 0.55;
+    const bandGlow = ctx.createLinearGradient(0, bandY - H * 0.16, 0, bandY + H * 0.16);
+    bandGlow.addColorStop(0,   'rgba(60,100,180,0)');
+    bandGlow.addColorStop(0.4, 'rgba(60,100,180,0.04)');
+    bandGlow.addColorStop(0.5, 'rgba(80,120,210,0.07)');
+    bandGlow.addColorStop(0.6, 'rgba(60,100,180,0.04)');
+    bandGlow.addColorStop(1,   'rgba(60,100,180,0)');
+    ctx.fillStyle = bandGlow;
+    ctx.fillRect(0, bandY - H * 0.16, W, H * 0.32);
+
+    // Stars
+    stars.forEach(s => {
+      const alpha = s.base * (0.5 + 0.5 * Math.sin(t * s.ts + s.tw));
+      if (s.r > 1.6) {
+        const halo = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
+        halo.addColorStop(0, `rgba(${s.color.join(',')},${alpha * 0.35})`);
+        halo.addColorStop(1, `rgba(${s.color.join(',')},0)`);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
+        ctx.fillStyle = halo;
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${s.color.join(',')},${alpha})`;
+      ctx.fill();
+    });
+
+    // Spawn comets from all directions — every 6–9s
+    if (t - lastComet > 6 + Math.random() * 3) {
+      comets.push(mkComet(false));
+      lastComet = t;
+    }
+
+    // Draw comets
+    comets = comets.filter(c => c.life < c.maxLife);
+    comets.forEach(c => {
+      c.x += c.vx; c.y += c.vy; c.life++;
+      const prog   = c.life / c.maxLife;
+      const fadeIn = Math.min(prog * 5, 1);
+      const alpha  = fadeIn * (1 - prog * prog) * (c.bright ? 1.1 : 0.95);
+      if (alpha < 0.01) return;
+
+      const steps = Math.ceil(c.len / 8);
+      const tx = c.x - c.vx * steps;
+      const ty = c.y - c.vy * steps;
+
+      const grad = ctx.createLinearGradient(tx, ty, c.x, c.y);
+      grad.addColorStop(0,   `rgba(56,189,248,0)`);
+      grad.addColorStop(0.5, `rgba(120,210,255,${alpha * 0.3})`);
+      grad.addColorStop(1,   `rgba(230,245,255,${Math.min(alpha, 1)})`);
+
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(c.x, c.y);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = c.bright ? 2.8 : 1.8;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // glowing head
+      const headR = c.bright ? 12 : 7;
+      const glow = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, headR);
+      glow.addColorStop(0,   `rgba(245,252,255,${Math.min(alpha, 1)})`);
+      glow.addColorStop(0.45,`rgba(120,210,255,${alpha * 0.55})`);
+      glow.addColorStop(1,   `rgba(56,189,248,0)`);
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, headR, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+    });
+  }
+
+  resize();
+  frame();
+  launchBurst();
+  window.addEventListener('resize', resize);
+
+  /* ── SCROLL REVEAL: slide-in, fires EVERY scroll in AND out ── */
+  const skCards = Array.from(document.querySelectorAll('.sk-card'));
+  const skTimers = new Map();
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const el  = e.target;
+      const idx = skCards.indexOf(el);
+      const rowDelay = Math.floor(idx / 3) * 100;
+      const colDelay = (idx % 3) * 80;
+      const delay = rowDelay + colDelay;
+
+      if (skTimers.has(el)) { clearTimeout(skTimers.get(el)); skTimers.delete(el); }
+
+      if (e.isIntersecting) {
+        // remove resetting flag → transitions are back on → slide IN
+        el.classList.remove('resetting');
+        const t = setTimeout(() => el.classList.add('in'), delay);
+        skTimers.set(el, t);
+      } else {
+        // disable transitions, remove .in instantly → card snaps back to off-screen pos
+        el.classList.remove('in');
+        el.classList.add('resetting');
+        // re-enable transitions on next frame so they're ready for next scroll
+        requestAnimationFrame(() => el.classList.remove('resetting'));
+      }
+    });
+  }, { threshold: 0.12 });
+
+  skCards.forEach(el => io.observe(el));
+
+  /* ── SLIDER ── */
+  const track  = document.getElementById('slTrack');
+  const prev   = document.getElementById('slPrev');
+  const next   = document.getElementById('slNext');
+  const dotsEl = document.getElementById('slDots');
+  const catBtns = document.querySelectorAll('.cat-btn');
+
+  let currentIdx = 0;
+
+  function getVisible() {
+    return Array.from(document.querySelectorAll('.pf-slide'))
+      .filter(s => s.style.display !== 'none');
+  }
+
+  function getCardWidth() {
+    const v = getVisible();
+    if (!v.length) return 316;
+    return v[0].getBoundingClientRect().width + 16;
+  }
+
+  function buildDots() {
+    dotsEl.innerHTML = '';
+    const v = getVisible();
+    // how many "pages" roughly
+    const visPerView = Math.max(1, Math.floor(track.offsetWidth / getCardWidth()));
+    const pages = Math.max(1, Math.ceil(v.length / visPerView));
+    for (let i = 0; i < pages; i++) {
+      const d = document.createElement('span');
+      d.className = 'sl-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => goTo(i * visPerView);
+      dotsEl.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    const d = dotsEl.querySelectorAll('.sl-dot');
+    const visPerView = Math.max(1, Math.floor(track.offsetWidth / getCardWidth()));
+    const page = Math.floor(currentIdx / visPerView);
+    d.forEach((el, i) => el.classList.toggle('active', i === page));
+  }
+
+  function goTo(idx) {
+    const v = getVisible();
+    currentIdx = Math.max(0, Math.min(idx, v.length - 1));
+    if (!v[currentIdx]) return;
+    v[currentIdx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    updateDots();
+  }
+
+  prev.addEventListener('click', () => goTo(currentIdx - 1));
+  next.addEventListener('click', () => goTo(currentIdx + 1));
+
+  // Touch swipe
+  let sx = 0;
+  track.addEventListener('touchstart', e => sx = e.touches[0].clientX, { passive: true });
+  track.addEventListener('touchend', e => {
+    const dx = sx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 40) goTo(dx > 0 ? currentIdx + 1 : currentIdx - 1);
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') goTo(currentIdx - 1);
+    if (e.key === 'ArrowRight') goTo(currentIdx + 1);
+  });
+
+  // Category filter
+  catBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      catBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      document.querySelectorAll('.pf-slide').forEach(s => {
+        s.style.display = (cat === 'all' || s.dataset.cat === cat) ? '' : 'none';
+      });
+      currentIdx = 0;
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+      buildDots();
+    });
+  });
+
+  // Init
+  buildDots();
+  window.addEventListener('resize', () => { buildDots(); });
+})();
+</script>

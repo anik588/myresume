@@ -5,31 +5,24 @@ from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.views.generic import CreateView
-from .models import ProfileCategory, Project, Category  # Import ProfileCategory model
-import datetime  # Ensure datetime is imported
+from .models import ProfileCategory, Project, Category
+import datetime
 
 # Home view (index page)
-from django.shortcuts import render
 from .forms import ContactForm
-
-# views.py
 from django.contrib.auth.models import User
 
 MODEL_MAP = {
     'user': User,
     'project': Project,
     'category': Category,
-    # add others...
 }
-
 
 def home(request):
     form = ContactForm()
 
-    # Fetch all categories and prefetch related projects
     categories = Category.objects.prefetch_related('projects').all()
     profile_categories = ProfileCategory.objects.all()
-    # Group projects by category (only include if they have at least 1 project)
     categorized_projects = [
         {
             'name': category.name,
@@ -42,6 +35,7 @@ def home(request):
     context = {
         'form': form,
         'categorized_projects': categorized_projects,
+        'projects': Project.objects.all()[:12],
         'title': 'Welcome to My Resume',
         'content': 'This is the home page of my resume website.',
         'profile_categories': profile_categories
@@ -49,17 +43,35 @@ def home(request):
 
     return render(request, 'index.html', context)
 
-
-# Portfolio views (ecommerce and newspaper)
+# Portfolio views
 def portfolio_ecommerce(request):
     return render(request, 'portfolio-ecommerce.html')
-
 
 def portfolio_newspaper_site(request):
     return render(request, 'portfolio-newspaper-site.html')
 
+def portfolio_skill(request):
+    form = ContactForm()
 
-# Contact form handling and email sending
+    categories = Category.objects.prefetch_related('projects').all()
+    profile_categories = ProfileCategory.objects.all()
+    categorized_projects = [
+        {
+            'name': category.name,
+            'projects': category.projects.all()
+        }
+        for category in categories
+        if category.projects.exists()
+    ]
+
+    context = {
+        'form': form,
+        'categorized_projects': categorized_projects,
+        'profile_categories': profile_categories
+    }
+
+    return render(request, 'portfolio_skill.html', context)
+
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -68,7 +80,6 @@ def contact(request):
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
 
-            # Prepare the email context
             context = {
                 'name': name,
                 'email': email,
@@ -77,10 +88,9 @@ def contact(request):
             }
             html_content = render_to_string('email.html', context)
 
-            # Set up the email
             subject = 'New Message Request'
             from_email = settings.DEFAULT_FROM_EMAIL
-            recipient_list = [settings.DEFAULT_FROM_EMAIL]  # Replace with actual recipient if needed
+            recipient_list = [settings.DEFAULT_FROM_EMAIL]
             email_message = EmailMultiAlternatives(subject, '', from_email, recipient_list)
             email_message.attach_alternative(html_content, "text/html")
 
@@ -94,14 +104,11 @@ def contact(request):
             return JsonResponse({'success': False, 'message': 'Invalid form submission.'})
     return render(request, 'index.html', {'form': ContactForm()})
 
-
-# Project detail view
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
     image_url = request.build_absolute_uri(project.image_1.url) if project.image_1 else None
-    # Calculate the filled and empty stars
-    filled_stars = range(project.rating)  # Creates a range of filled stars
-    empty_stars = range(5 - project.rating)  # Creates a range of empty stars
+    filled_stars = range(project.rating)
+    empty_stars = range(5 - project.rating)
 
     return render(request, 'project.html', {
         'project': project,
@@ -110,28 +117,12 @@ def project_detail(request, pk):
         'project_image_absolute_url': image_url,
     })
 
-
-# from django.contrib.auth.decorators import login_required
-# from django.shortcuts import render
-# from .models import Project, Category, ProfileCategory, ProfileContent
-#
-# @login_required
-# def dashboard_view(request):
-#     return render(request, 'dashboard/dashboard.html', {
-#         'projects': Project.objects.all(),
-#         'categories': Category.objects.all(),
-#         'profile_categories': ProfileCategory.objects.all(),
-#         'profile_contents': ProfileContent.objects.all(),
-#     })
-
 from django.apps import apps
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelform_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-
-# 🧠 Helper to get any model from any app
 def get_model_by_name(model_name):
     for app in apps.get_app_configs():
         try:
@@ -139,12 +130,6 @@ def get_model_by_name(model_name):
         except LookupError:
             continue
     raise LookupError(f"Model '{model_name}' not found in any app.")
-
-
-from django.apps import apps
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
 
 @login_required
 def dashboard_home(request):
@@ -160,7 +145,6 @@ def dashboard_home(request):
                     'verbose_name': model._meta.verbose_name_plural,
                 }
 
-                # Categorize models
                 if model.__name__ in ['User', 'Group', 'Permission', 'LogEntry', 'ContentType', 'Session']:
                     admin_models.append(model_info)
                 elif model.__name__ in ['Category', 'Project']:
@@ -180,34 +164,21 @@ def dashboard_home(request):
         'project_models': project_models,
         'profile_models': profile_models,
         'user_color': user_color,
-        'recent': []  # You can fill this later with recent model entries
+        'recent': []
     })
-
-
-# ✅ List all objects of a model
-
-from django.shortcuts import render
-from django.core.paginator import Paginator
-from django.apps import apps
-
 
 @login_required
 def model_list(request, model_name):
-    # Dynamically get the model from the model_name passed to the view
-    model = get_model_by_name(model_name)  # Replace 'your_app_name' with your app's name
+    model = get_model_by_name(model_name)
 
-    # Get all objects from the model
     objects = model.objects.all()
 
-    # Pagination (optional, for large data sets)
     page = request.GET.get('page', 1)
-    paginator = Paginator(objects, 10)  # 10 items per page
+    paginator = Paginator(objects, 10)
     paginated_objects = paginator.get_page(page)
 
-    # Get model fields (list of fields you want to display in your table)
     fields = [field.name for field in model._meta.fields]
 
-    # Prepare the objects_with_values (each row is a dictionary with 'object' and 'values' list)
     objects_with_values = []
     for obj in paginated_objects:
         values = [getattr(obj, field) for field in fields]
@@ -219,8 +190,6 @@ def model_list(request, model_name):
         'model_name': model_name,
     })
 
-
-# ✅ Add or edit a model object
 @login_required
 def model_add_edit(request, model_name, pk=None):
     model = get_model_by_name(model_name)
@@ -243,14 +212,11 @@ def model_add_edit(request, model_name, pk=None):
 
     return render(request, 'dashboard/model_form.html', {
         'user_color': user_color,
-
         'form': form,
         'model_name': model_name,
         'is_edit': pk is not None
     })
 
-
-# ✅ Delete a model object (from modal or direct)
 @login_required
 def model_delete(request, model_name, pk):
     model = get_model_by_name(model_name)
@@ -265,18 +231,12 @@ def model_delete(request, model_name, pk):
         messages.success(request, f"{model_name} deleted successfully.")
         return redirect('model_list', model_name=model_name)
 
-    # fallback (in case delete modal not used)
     return render(request, 'dashboard/model_delete.html', {
         'object': obj,
         'model_name': model_name,
         'user_color': user_color
     })
 
-
-from django.contrib.auth.decorators import login_required
-
-
 @login_required
 def some_view(request):
-    # Your view logic
     pass

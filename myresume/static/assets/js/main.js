@@ -45,7 +45,14 @@
   const preloader = document.querySelector('#preloader');
   if (preloader) {
     window.addEventListener('load', () => {
-      preloader.remove();
+      setTimeout(() => {
+        preloader.remove();
+        const siteContent = document.querySelector('#site-content');
+        if (siteContent) {
+          siteContent.style.visibility = 'visible';
+          siteContent.style.opacity = '1';
+        }
+      }, 3000);
     });
   }
 
