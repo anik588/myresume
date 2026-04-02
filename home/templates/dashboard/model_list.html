@@ -52,7 +52,7 @@
             {% endfor %}
             <td class="p-2 whitespace-nowrap">
               <a href="{% url 'model_edit' model_name row.object.pk %}" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">✏️ Edit</a>
-              <button onclick="openDeleteModal('{% url 'model_delete' model_name row.object.pk %}', '{{ row.object }}')" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">🗑️ Delete</button>
+              <button onclick="event.stopPropagation(); openDeleteModal('{% url 'model_delete' model_name row.object.pk %}', '{{ row.object }}')" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">🗑️ Delete</button>
             </td>
           </tr>
         {% empty %}
@@ -88,7 +88,7 @@
       <p class="mb-6">Are you sure you want to delete: <strong id="delete-target"></strong>?</p>
       <form id="delete-form" method="post" class="flex justify-end space-x-4">
         {% csrf_token %}
-        <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 rounded bg-gray-300">Cancel</button>
+        <button type="button" onclick="event.stopPropagation(); closeDeleteModal()" class="px-4 py-2 rounded bg-gray-300">Cancel</button>
         <button type="submit" class="px-4 py-2 rounded bg-red-600 text-white">Yes, Delete</button>
       </form>
     </div>
