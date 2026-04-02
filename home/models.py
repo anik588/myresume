@@ -1,9 +1,11 @@
 from django.db import models
+from tinymce.models import HTMLField
+import emoji
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, unique=True)  # Unique category name
-    description = models.TextField(blank=True, null=True)  # Optional description of the category
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -11,9 +13,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Project Category"
         verbose_name_plural = "Project Categories"
-
-
-from django.db import models
 
 
 class Project(models.Model):
@@ -40,24 +39,15 @@ class Project(models.Model):
         verbose_name_plural = "Projects"
 
     def get_field_names(self):
-        """
-        Return a dictionary of field names and values for this instance
-        """
         field_names = {}
         for field in self._meta.fields:
             field_names[field.name] = getattr(self, field.name)
         return field_names
 
 
-from django.db import models
-from tinymce.models import HTMLField  # For rich text content (TinyMCE)
-import emoji
-
-
-# Category Model for Profile sections (e.g., "About Box", "Education", etc.)
 class ProfileCategory(models.Model):
-    name = models.CharField(max_length=100)  # e.g., "About Box", "Education", etc.
-    description = models.TextField(blank=True, null=True)  # Optional description of the category
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -67,12 +57,11 @@ class ProfileCategory(models.Model):
         verbose_name_plural = "Profile Categories"
 
 
-# Content Model for storing actual profile content (linked to ProfileCategory)
 class ProfileContent(models.Model):
     category = models.ForeignKey(ProfileCategory, on_delete=models.CASCADE, related_name="content")
-    title = models.CharField(max_length=100)  # e.g., "My Bio", "Work Experience"
-    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)  # Profile section image
-    content = HTMLField()  # Rich text field (TinyMCE editor for styling, bold, italic, etc.)
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    content = HTMLField()
 
     class Meta:
         verbose_name = "Profile"
@@ -82,6 +71,5 @@ class ProfileContent(models.Model):
         return f"{self.category.name} - {self.title}"
 
     def add_emoji(self, emoji_text):
-        """ Add emoji to the content dynamically (optional) """
         self.content = emoji.emojize(f"{self.content} {emoji_text}", use_aliases=True)
         self.save()
