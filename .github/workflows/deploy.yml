@@ -1,4 +1,4 @@
-name: Deploy to FTP
+name: Deploy Django Backend to FTP
 
 on:
   push:
@@ -7,14 +7,13 @@ on:
 
 jobs:
   web-deploy:
-    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get latest code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Sync files to server
+      - name: Deploy to cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -22,7 +21,11 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          server-dir: public_html/
+          server-dir: repositories/myresume
           exclude: |
             **/.git/**
             **/.git*
+            **/__pycache__/**
+            **/*.pyc
+            **/node_modules/**
+            **/venv/**
