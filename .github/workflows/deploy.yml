@@ -21,7 +21,13 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          server-dir: repositories/myresume
+          server-dir: repositories/myresume/
+
+          # 🔥 add these back
+          timeout: 1200000
+          log-level: verbose
+          dangerous-clean-slate: false
+
           exclude: |
             **/.git/**
             **/.git*
